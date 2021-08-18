@@ -15,6 +15,7 @@ pool:
 variables:
   sourceBranch: $[variables['Build.SourceBranch']]
   targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
+  buildReason: $[variables['Build.Reason']]
 
 stages:
 - stage: Dev1
@@ -25,14 +26,19 @@ stages:
     steps:
       - script: echo SourceBranch - $(sourceBranch)
         displayName: Source Branch Val
+      - script: echo BuildReason - $(buildReason)
+        displayName: Build Reason Val
 
 - stage: Dev2
-  displayName: Dev Stage 1
+  displayName: Dev Stage 2
   jobs:
   - job: PrintTargetPullRequestBranch
     steps:
       - script: echo TargetBranch - $(targetPullRequestBranch)
         displayName: Target Branch Val
+
+      - script: echo BuildReason - $(buildReason)
+        displayName: Build Reason Val
 
       - script: echo End of Dev
         displayName: Final  
