@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-vois-service
+  labels:
+    type: ClusterIP
+spec:
+  type: ClusterIP
+  ports:
+    - targetPort: 3000
+      port: 3000
+  selector:
+    type: front-end
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  labels:
+    type: ClusterIP
+spec:
+  type: ClusterIP
+  ports:
+    - targetPort: 27017
+      port: 27017
+  selector:
+    db: mongodb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-vois-deployment
+  labels:
+    env: prod
+spec:
+  template:
+    metadata:
+      name: hello-vois-pod
+      labels:
+        type: front-end
+    spec:
+      containers:
+        - name: hello-vois
+          image: shehabeldeen/hello-vois:prod
+          env:
+            - name: MONGODB_URL
+              value: "mongo-service.taas-core-prod.svc.cluster.local"
+      initContainers:
+        - name: init-backend
+          image: busybox:1.28
+          command: [
+              "sh",
+              "-c",
+              # $(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) returns namespace
+              "until nslookup mongo-service.taas-core-prod.svc.cluster.local; do echo waiting for the backend service..; sleep 2; done; echo backend service...[OK]",
+            ]
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  labels:
+    env: prod
+spec:
+  template:
+    metadata:
+      name: mongodb-pod
+      labels:
+        db: mongodb
+        type: back-end
+    spec:
+      containers:
+        - name: mongodb-cont
+          image: mongo:4.0.4
+  replicas: 3
+  selector:
+    matchLabels:
+      db: mongodb
