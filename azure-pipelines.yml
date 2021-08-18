@@ -21,7 +21,7 @@ stages:
 
       - task: NodeTool@0
         inputs:
-          versionSpec: '10x'
+          versionSpec: '10.x'
 
       - script: npm install  
 
