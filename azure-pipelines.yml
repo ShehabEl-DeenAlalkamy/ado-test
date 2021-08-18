@@ -5,33 +5,34 @@
 
 trigger:
 - master
+- dev
+- test
+- prod
 
 pool:
   vmImage: ubuntu-latest
    
 variables:
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  sourceBranch: $[variables['Build.SourceBranch']]
+  targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
 
 stages:
-- stage: A
+- stage: Dev1
+  displayName: Dev Stage 1
+  # condition: and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'dev'))
   jobs:
-  - job: A1
+  - job: PrintSourceBranch
     steps:
-      - script: echo a
+      - script: echo SourceBranch - $(sourceBranch)
+        displayName: Source Branch Val
 
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '10.x'
-
-      - script: npm install  
-
-      - script: npm test
-
-
-- stage: B
-  condition: and(succeeded(), eq(variables.isMain, 'true'))
+- stage: Dev2
+  displayName: Dev Stage 1
   jobs:
-  - job: B1
+  - job: PrintTargetPullRequestBranch
     steps:
-      - script: echo Hello Stage B!
-      - script: echo $(isMain)
+      - script: echo TargetBranch - $(targetPullRequestBranch)
+        displayName: Target Branch Val
+
+      - script: echo End of Dev
+        displayName: Final  
