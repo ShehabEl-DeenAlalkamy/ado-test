@@ -17,7 +17,14 @@ stages:
   jobs:
   - job: A1
     steps:
-      - script: echoos
+      - script: echoo a
+
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10x'
+
+      - script: npm install  
+
 
 - stage: B
   condition: and(succeeded(), eq(variables.isMain, 'true'))
