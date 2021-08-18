@@ -25,6 +25,8 @@ stages:
 
       - script: npm install  
 
+      - script: npm test
+
 
 - stage: B
   condition: and(succeeded(), eq(variables.isMain, 'true'))
