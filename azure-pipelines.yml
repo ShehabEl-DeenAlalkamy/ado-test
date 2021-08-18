@@ -16,5 +16,10 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    cd app
     npm install
+    node index.js &
   displayName: 'npm install and build'
+
+- script: |
+    npm test
