@@ -8,28 +8,21 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+   
+variables:
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+stages:
+- stage: A
+  jobs:
+  - job: A1
+    steps:
+      - script: echo Hello Stage A!
 
-- script: |
-    npm install
-    npm install -g mocha chai request test
-    node index.js &
-  displayName: 'npm install and build'
-  workingDirectory: app
-
-- script: |
-    pwd
-    cd app
-    npm test
-  displayName: 'test'
-  workingDirectory: app
-  
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml'
+- stage: B
+  condition: and(succeeded(), eq(variables.isMain, 'true'))
+  jobs:
+  - job: B1
+    steps:
+      - script: echo Hello Stage B!
+      - script: echo $(isMain)
