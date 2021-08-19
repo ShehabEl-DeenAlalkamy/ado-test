@@ -44,7 +44,8 @@ jobs:
   - job: bla
     steps:
       - ${{ each env in convertToJson(parameters.environments) }}:
-          - script: echo ${{ env }}
+          - ${{ each pair in env.value }}:
+              - script: echo ${{ pair.key }} - ${{ pair.value }}
 # stages:
 #   - ${{ each env in parameters.environments }}:
 #       - template: ${{ variables.templateDest }}
