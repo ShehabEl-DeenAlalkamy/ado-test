@@ -1,6 +1,6 @@
 variables:
-  stageName: "Test"
-  stageDisplayName: "Test"
+  # stageName: "Test"
+  # stageDisplayName: "Test"
   namespace: "taas-core-test"
-  buildReason: "IndividualCI"
-  isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
+  # buildReason: "IndividualCI"
+  # isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}

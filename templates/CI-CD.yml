@@ -33,9 +33,9 @@ stages:
       - template: vars/vars-test.yml
     jobs:
       - job: test
-        displayName: ${{ variables.buildReason }} and ${{ variables.isTargetBranch }}
+        displayName: ${{ variables.namespace }}
         steps:
-          - script: echo ${{ variables.stageName }}
+          - script: echo ${{ variables.namespace }}
   # - stage: ${{ variables.stageName }}
   #   displayName: ${{ variables.stageDisplayName }}
   #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
