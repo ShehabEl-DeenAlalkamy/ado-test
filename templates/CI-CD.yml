@@ -3,10 +3,6 @@ parameters:
     default: ""
     type: string
 
-  - name: dev
-    default: ""
-    type: string
-
   # - name: stageDisplayName
   #   default: ''
   #   type: string
@@ -15,23 +11,24 @@ parameters:
   #   default: ''
   #   type: string
 
-  # - name: buildReason
-  #   default: "IndividualCI"
-  #   type: string
+  - name: buildReason
+    default: ''
+    type: string
 
-  # - name: isTargetBranch
-  #   default: true
-  #   type: boolean
-  # - name: environment
-  #   type: string
-  #   default: ''
+  - name: isTargetBranch
+    default: true
+    type: boolean
+
+  - name: env
+    type: string
+    default: ''
     # default:
     #   env: "dev"
     #   stageName: "Dev"
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ parameters.stageName }} 
+  - stage: ${{ parameters.stageName }} - {{ parameters.buildReason }} - {{ parameters.isTargetBranch }} - {{ parameters.env }}
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:

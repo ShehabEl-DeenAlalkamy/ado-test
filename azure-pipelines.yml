@@ -17,38 +17,32 @@ parameters:
     type: object
     default:
       dev:
-          # env: "dev"
-          stageName: "Dev"
-          # buildReason: "IndividualCI"
-          # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/dev') ]
+        env: "dev"
+        stageName: "Dev"
+        buildReason: "IndividualCI"
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/dev') ]
       test:
-          # env: "test"
-          stageName: "Test"
-          # buildReason: "IndividualCI"
-          # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/test') ]
+        env: "test"
+        stageName: "Test"
+        buildReason: "IndividualCI"
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/test') ]
       pprd:
-          # env: "pprd"
-          stageName: "PPrd"
-          # buildReason: "IndividualCI"
-          # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') ]
+        env: "pprd"
+        stageName: "PPrd"
+        buildReason: "IndividualCI"
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') ]
       prod:
-          # env: "prod"
-          stageName: "Prod"
-          # buildReason: "IndividualCI"
-          # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/prod') ]
+        env: "prod"
+        stageName: "Prod"
+        buildReason: "IndividualCI"
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/prod') ]
 
 variables:
   templateDest: templates/CI-CD.yml
 
-# jobs:
-#   - job: bla
-#     steps:
-#       - ${{ each env in parameters.environments }}:
-#           - ${{ each pair in env.value }}:
-#               - script: echo ${{ pair.key }} - ${{ pair.value }}
 stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
           ${{ each pair in env.value }}:
-              ${{ pair.key }}: ${{ pair.value }}
+            ${{ pair.key }}: ${{ pair.value }}
