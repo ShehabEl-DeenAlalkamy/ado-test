@@ -41,7 +41,7 @@ variables:
   templateDest: templates/CI-CD.yml
 
 stages:
-  - ${{ each env in parameters.environments }}:
+  - ${{ each env in convertToJson(parameters.environments) }}:
       - template: ${{ variables.templateDest }}
         parameters:
           ${{ each pair in env }}:
