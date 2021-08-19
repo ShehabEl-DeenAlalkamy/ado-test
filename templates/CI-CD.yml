@@ -23,29 +23,38 @@ parameters:
     type: string
 
 stages:
-  - stage: ${{ variables.stageName }}
-    displayName: ${{ variables.stageDisplayName }}
-    condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
+  - stage: ${{ parameters.environment }}
+    displayName: ${{ parameters.environment }}
+    condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables: 
       - template: vars/vars-${{ parameters.environment }}.yml
     jobs:
-      - job: Test
-        displayName: Test
+      - job: test
         steps:
-          - script: exit 1
+          - script: echo ${{ variables.stageName }}
+  # - stage: ${{ variables.stageName }}
+  #   displayName: ${{ variables.stageDisplayName }}
+  #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
+  #   variables: 
+  #     - template: vars/vars-${{ parameters.environment }}.yml
+  #   jobs:
+  #     - job: Test
+  #       displayName: Test
+  #       steps:
+  #         - script: exit 1
 
-      - job: BuildAndDeploy
-        displayName: Build & Depoly
-        dependsOn: Test
-        steps:
-          - script: echo Build Image
-          - script: echo Push Image
-          - script: echo Deploy to ${{ variables.namespace }}
-          - script: echo RollBack
+  #     - job: BuildAndDeploy
+  #       displayName: Build & Depoly
+  #       dependsOn: Test
+  #       steps:
+  #         - script: echo Build Image
+  #         - script: echo Push Image
+  #         - script: echo Deploy to ${{ variables.namespace }}
+  #         - script: echo RollBack
 
-      - job: SendErrorNotification
-        displayName: Send Error Notification
-        dependsOn: Test
-        condition: failed()
-        steps:
-          - script: echo Sending Notification to Development Team
+  #     - job: SendErrorNotification
+  #       displayName: Send Error Notification
+  #       dependsOn: Test
+  #       condition: failed()
+  #       steps:
+  #         - script: echo Sending Notification to Development Team
