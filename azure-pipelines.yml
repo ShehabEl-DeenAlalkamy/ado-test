@@ -13,39 +13,17 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  sourceBranch: $[variables['Build.SourceBranch']]
-  targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
-  templateDest: templates/CI-CD.yml
+  - name: environments
+    value:
+      - dev
+      - test
+      - pprd
+      - prod
+  - name: templateDest
+    value: templates/CI-CD.yml
 
 stages:
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Master"
-      stageDisplayName: "Master"
-      namespace: "taas-core"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}
-
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Dev"
-      stageDisplayName: "Dev"
-      namespace: "taas-core-dev"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
-
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Test"
-      stageDisplayName: "Test"
-      namespace: "taas-core-test"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
-
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Prod"
-      stageDisplayName: "Prod"
-      namespace: "taas-core-prod"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}  
+  - ${{ each env in variables.environments }}:
+      - template: ${{ variables.templateDest }}
+        parameters:
+          - template: templates/vars/vars-${{ env }}.yml
