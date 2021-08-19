@@ -20,7 +20,7 @@ stages:
 - stage: Dev1
   displayName: Dev Stage 1
   dependsOn: []
-  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'), succeededOrFailed())
+  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   # condition: and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'dev'))
   jobs:
   - job: PrintSourceBranch
@@ -31,7 +31,7 @@ stages:
 - stage: Dev2
   displayName: Dev Stage 2
   dependsOn: Dev1
-  condition: succeededOrFailed()
+  condition: and(succeededOrFailed(), eq(variables['Build.SourceBranch'], 'refs/heads/*'))
   jobs:
   - job: PrintTargetPullRequestBranch
     steps:
