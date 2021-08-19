@@ -16,39 +16,35 @@ parameters:
   - name: environments
     type: object
     default:
-      dev:
-        env: "dev"
+      - env: "dev"
         stageName: "Dev"
         buildReason: "IndividualCI"
-        name: "refs/heads/dev"
-      test:
-        env: test
+        branchName: "refs/heads/dev"
+
+      - env: test
         stageName: "Test"
         buildReason: "IndividualCI"
-        name: "refs/heads/test"
-      pprd:
-        env: "pprd"
+        branchName: "refs/heads/test"
+
+      - env: "pprd"
         stageName: "PPrd"
         buildReason: "IndividualCI"
-        name: "refs/heads/pprd"
-      prod:
-        env: "prod"
+        branchName: "refs/heads/pprd"
+
+      - env: "prod"
         stageName: "Prod"
         buildReason: "IndividualCI"
-        name: "refs/heads/prod"
+        nabranchNameme: "refs/heads/prod"
 
 variables:
   templateDest: templates/CI-CD.yml
-  isTarget: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
 
 stages:
-  - ${{ each env in parameters.environments }}:
+  - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          # isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/${{ env.value.env }}') }}
           dummy: ${{ variables.isTarget }}
-          ${{ each pair in env.value }}:
-            ${{ if eq(env.value.key, 'name') }}:
-                isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
+          ${{ each pair in environment }}:
+            ${{ if eq(pair.key, 'branchName') }}:
+              isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
             ${{ pair.key }}: ${{ pair.value }}
-
