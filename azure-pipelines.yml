@@ -46,5 +46,6 @@ stages:
           dummy: ${{ variables.isTarget }}
           ${{ each pair in environment }}:
             ${{ if ne(pair.key, 'branchName') }}:
+              ${{ pair.key }}: ${{ pair.value }}
+            ${{ else }}:
               isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
-            ${{ pair.key }}: ${{ pair.value }}
