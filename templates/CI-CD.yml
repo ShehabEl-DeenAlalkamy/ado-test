@@ -2,12 +2,12 @@ parameters:
   stageName: ''
   stageDisplayName: ''
   namespace: ''
-  - name: buildReason
-    default: IndividualCI
-    type: string 
-  - name: isTargetBranch 
-    default: true
-    type: boolean
+- name: buildReason
+  default: IndividualCI
+  type: string 
+- name: isTargetBranch 
+  default: true
+  type: boolean
 
 stages:
 - stage: ${{ parameters.stageName }}
