@@ -1,5 +1,5 @@
 FROM node
-# hello-vois application path 
+# hello-vois application path
 ENV APP_PATH /usr/src/hello-vois
 WORKDIR ${APP_PATH}
 # installing dependencies
