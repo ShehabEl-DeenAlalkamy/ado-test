@@ -20,7 +20,7 @@ parameters:
       - pprd
       - prod
   - name: templateDest
-    values: templates/CI-CD.yml
+    default: templates/CI-CD.yml
 
 stages:
   - ${{ each env in parameters.environments }}:
