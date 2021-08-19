@@ -43,7 +43,7 @@ variables:
 jobs:
   - job: bla
     steps:
-      - ${{ each env in parameters.environments }}:
+      - ${{ each env in convertToJson(parameters.environments) }}:
           - script: echo ${{ env }}
 # stages:
 #   - ${{ each env in parameters.environments }}:
