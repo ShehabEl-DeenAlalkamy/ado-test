@@ -14,13 +14,13 @@ pool:
 
 parameters:
   - name: environments
-    value:
+    values:
       - dev
       - test
       - pprd
       - prod
   - name: templateDest
-    value: templates/CI-CD.yml
+    values: templates/CI-CD.yml
 
 stages:
   - ${{ each env in parameters.environments }}:
