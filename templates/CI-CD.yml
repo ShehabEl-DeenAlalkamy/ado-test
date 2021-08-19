@@ -27,7 +27,7 @@ stages:
     displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
     variables: 
-      - template: vars/vars-{{ parameters.environment }}.yml
+      - template: vars/vars-${{ parameters.environment }}.yml
     jobs:
       - job: Test
         displayName: Test
