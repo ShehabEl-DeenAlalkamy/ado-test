@@ -16,32 +16,28 @@ parameters:
   - name: environments
     type: object
     default:
-      - dev
-      - test
-      - pprd
-      - prod
+      dev:
+        stageName: "Dev"
+        buildReason: "IndividualCI"
+        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
+      test:
+        stageName: "Test"
+        buildReason: "IndividualCI"
+        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
+      pprd:
+        stageName: "PPrd"
+        buildReason: "IndividualCI"
+        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') }}
+      prod:
+        stageName: "Prod"
+        buildReason: "IndividualCI"
+        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}
 
 variables:
   templateDest: templates/CI-CD.yml
-  dev:
-    stageName: "Dev"
-    buildReason: "IndividualCI"
-    isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
-  test:
-    stageName: "Test"
-    buildReason: "IndividualCI"
-    isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
-  pprd:
-    stageName: "PPrd"
-    buildReason: "IndividualCI"
-    isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') }}
-  prod:
-    stageName: "Prod"
-    buildReason: "IndividualCI"
-    isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}
 
 stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          environment: ${{ env }}
+          environment: ${{ env.key }}
