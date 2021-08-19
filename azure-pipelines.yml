@@ -40,7 +40,7 @@ stages:
       stageDisplayName: "Test"
       namespace: "taas-core-test"
       buildReason: "IndividualCI"
-      isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
 
   - template: ${{ variables.templateDest }}
     parameters:
