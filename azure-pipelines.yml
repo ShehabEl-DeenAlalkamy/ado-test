@@ -45,7 +45,7 @@ stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          isTargetBranch: eq(variables['Build.SourceBranch'], 'refs/heads/${{ env.value.env }}')
+          isTargetBranch: $(eq(variables['Build.SourceBranch'], 'refs/heads/${{ env.value.env }}'))
           dummy: ${{ variables.isTarget }}
           ${{ each pair in env.value }}:
             ${{ pair.key }}: ${{ pair.value }}
