@@ -27,7 +27,7 @@ parameters:
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ parameters.environments.$[parameters.env].stageName }} 
+  - stage: ${{ parameters.environments.[parameters.env].stageName }} 
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
