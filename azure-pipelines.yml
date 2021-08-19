@@ -30,6 +30,7 @@ stages:
 
 - stage: Dev2
   displayName: Dev Stage 2
+  condition: suceededOrFailed()
   jobs:
     - job: PrintTargetPullRequestBranch
       steps:
