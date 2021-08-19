@@ -34,7 +34,7 @@ parameters:
       - env: "prod"
         stageName: "Prod"
         buildReason: "IndividualCI"
-        nabranchNameme: "refs/heads/prod"
+        branchName: "refs/heads/prod"
 
 variables:
   templateDest: templates/CI-CD.yml
