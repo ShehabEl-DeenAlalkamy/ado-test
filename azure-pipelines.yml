@@ -44,5 +44,5 @@ stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          ${{ each pair in convertToJson(env) }}:
+          ${{ each pair in env }}:
               stageName: ${{ pair.stageName }}
