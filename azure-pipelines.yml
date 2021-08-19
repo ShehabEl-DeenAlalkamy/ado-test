@@ -29,7 +29,7 @@ stages:
 
 - stage: Dev2
   displayName: Dev Stage 2
-  dependsOn: []
+  dependsOn: Dev1
   jobs:
   - job: PrintTargetPullRequestBranch
     steps:
