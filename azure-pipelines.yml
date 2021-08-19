@@ -14,7 +14,7 @@ pool:
 
 variables:
   - name: environments
-    value:
+    values:
       - dev
       - test
       - pprd
