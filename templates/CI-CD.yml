@@ -24,7 +24,7 @@ parameters:
 
 stages:
   - stage: ${{ parameters.environment }}
-    displayName: ${{ parameters.environment }}
+    displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables: 
       - template: vars/vars-${{ parameters.environment }}.yml
