@@ -50,5 +50,5 @@ stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          ${{ each pair in env.value }}:
+          - ${{ each pair in env.value }}:
               ${{ pair.key }}: ${{ pair.value }}
