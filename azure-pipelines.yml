@@ -14,7 +14,7 @@ pool:
 
 parameters:
   - name: environments
-    values:
+    default:
       - dev
       - test
       - pprd
