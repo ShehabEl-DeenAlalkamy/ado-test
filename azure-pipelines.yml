@@ -44,7 +44,7 @@ stages:
       - template: ${{ variables.templateDest }}
         parameters:
           dummy: ${{ variables.isTarget }}
+          isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
           ${{ each pair in environment }}:
-            ${{ if not(ne(pair.key, 'branchName')) }}:
-              isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
-            ${{ pair.key }}: ${{ pair.value }}
+            ${{ if ne(pair.key, 'branchName') }}:
+              ${{ pair.key }}: ${{ pair.value }}
