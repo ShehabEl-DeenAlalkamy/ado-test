@@ -19,6 +19,7 @@ variables:
 stages:
 - stage: Dev1
   displayName: Dev Stage 1
+  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   # condition: and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'dev'))
   jobs:
   - job: PrintSourceBranch
