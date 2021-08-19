@@ -18,7 +18,7 @@ variables:
   templateDest: templates/CI-CD.yml
 
 stages:
-  - template: ${{ templateDest }}
+  - template: ${{ variables.templateDest }}
     parameters:
       stageName: "Master"
       stageDisplayName: "Master"
@@ -26,7 +26,7 @@ stages:
       buildReason: "IndividualCI"
       isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
-  - template: ${{ templateDest }}
+  - template: ${{ variables.templateDest }}
     parameters:
       stageName: "Dev"
       stageDisplayName: "Dev"
@@ -34,7 +34,7 @@ stages:
       buildReason: "IndividualCI"
       isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
-  - template: ${{ templateDest }}
+  - template: ${{ variables.templateDest }}
     parameters:
       stageName: "Test"
       stageDisplayName: "Test"
