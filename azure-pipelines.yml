@@ -20,9 +20,9 @@ parameters:
       - test
       - pprd
       - prod
-  
+
 variables:
-  - templateDest: templates/CI-CD.yml
+  templateDest: templates/CI-CD.yml
 
 stages:
   - ${{ each env in parameters.environments }}:
