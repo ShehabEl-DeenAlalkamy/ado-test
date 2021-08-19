@@ -20,10 +20,10 @@ parameters:
   #   type: boolean
   - name: environment
     type: object
-    default:
-      env: "dev"
-      stageName: "Dev"
-      buildReason: "IndividualCI"
+    # default:
+    #   env: "dev"
+    #   stageName: "Dev"
+    #   buildReason: "IndividualCI"
 
 stages:
   - stage: ${{ parameters.environment.stageName }} and ${{ parameters.environment.isTargetBranch }}
