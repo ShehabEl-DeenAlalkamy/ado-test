@@ -24,9 +24,9 @@ stages:
   jobs:
     - job: PrintSourceBranch
       steps:
+        - script: cat file
         - script: echo SourceBranch - $(sourceBranch)
           displayName: Source Branch Val
-        - script: cat file
 
 - stage: Dev2
   displayName: Dev Stage 2
