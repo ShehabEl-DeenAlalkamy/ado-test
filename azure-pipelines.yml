@@ -19,19 +19,19 @@ parameters:
       dev:
         stageName: "Dev"
         buildReason: "IndividualCI"
-        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/dev') ]
       test:
         stageName: "Test"
         buildReason: "IndividualCI"
-        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/test') ]
       pprd:
         stageName: "PPrd"
         buildReason: "IndividualCI"
-        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') }}
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') ]
       prod:
         stageName: "Prod"
         buildReason: "IndividualCI"
-        isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}
+        isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/prod') ]
 
 variables:
   templateDest: templates/CI-CD.yml
