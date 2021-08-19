@@ -41,7 +41,7 @@ stages:
       stageDisplayName: "Master Pull Request"
       namespace: "taas-core-test"
       buildReason: "PullRequest"
-      isTargetBranch: ${{ eq(variables['System.PullRequest.TargetBranch'], 'master') }}
+      isTargetBranch: ${{ eq(variables['System.PullRequest.TargetBranch'], 'test') }}
 
   - template: ${{ variables.templateDest }}
     parameters:
