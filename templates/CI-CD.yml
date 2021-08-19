@@ -15,6 +15,10 @@ parameters:
     default: ''
     type: string
 
+  - name: dummy
+    default: ''
+    type: string
+
   - name: isTargetBranch
     default: true
     type: boolean
@@ -28,7 +32,7 @@ parameters:
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ parameters.stageName }} - ${{ parameters.buildReason }} - ${{ parameters.isTargetBranch }} - ${{ parameters.env }}
+  - stage: ${{ parameters.stageName }} - ${{ parameters.buildReason }} - ${{ parameters.dummy }} - ${{ parameters.isTargetBranch }} - ${{ parameters.env }}
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
