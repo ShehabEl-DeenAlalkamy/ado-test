@@ -42,7 +42,7 @@ stages:
       buildReason: "IndividualCI"
       isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
 
-  - template: ${{ templateDest }}
+  - template: ${{ variables.templateDest }}
     parameters:
       stageName: "Prod"
       stageDisplayName: "Prod"

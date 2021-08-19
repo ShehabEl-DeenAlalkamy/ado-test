@@ -1,7 +1,7 @@
 parameters:
-  - stageName: ''
-  - stageDisplayName: ''
-  - namespace: ''
+  stageName: ''
+  stageDisplayName: ''
+  namespace: ''
   - name: buildReason
     default: IndividualCI
     type: string 
