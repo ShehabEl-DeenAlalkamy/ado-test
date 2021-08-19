@@ -23,7 +23,7 @@ parameters:
     type: string
 
 stages:
-  - stage: ${{ parameters.environment }}
+  - stage: ${{ variables.stageName }}
     displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables: 
