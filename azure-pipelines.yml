@@ -45,4 +45,4 @@ stages:
       - template: ${{ variables.templateDest }}
         parameters:
           ${{ each pair in env }}:
-              stageName: ${{ pair.stageName }}
+              stageName: ${{ pair.value.stageName }}
