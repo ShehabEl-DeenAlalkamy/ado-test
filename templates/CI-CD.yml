@@ -25,9 +25,9 @@ stages:
   condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
   jobs:
     - job: Test
-      displayName: Test1
+      displayName: Test
       steps:
-        - script: echo Test
+        - script: exit 1
 
     - job: BuildAndDeploy
       displayName: Build & Depoly
