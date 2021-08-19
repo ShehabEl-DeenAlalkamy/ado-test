@@ -19,24 +19,21 @@ variables:
 stages:
 - stage: Dev1
   displayName: Dev Stage 1
-  dependsOn: []
-  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   # condition: and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'dev'))
   jobs:
-  - job: PrintSourceBranch
-    steps:
-      - script: echo SourceBranch - $(sourceBranch)
-        displayName: Source Branch Val
+    - job: PrintSourceBranch
+      steps:
+        - script: echo SourceBranch - $(sourceBranch)
+          displayName: Source Branch Val
+        - script: cat file
 
 - stage: Dev2
   displayName: Dev Stage 2
-  dependsOn: Dev1
-  condition: and(succeededOrFailed(), eq(variables['Build.SourceBranch'], 'refs/heads/*'))
   jobs:
-  - job: PrintTargetPullRequestBranch
-    steps:
-      - script: echo TargetBranch - $(targetPullRequestBranch)
-        displayName: Target Branch Val
-
-      - script: echo End of Dev
-        displayName: Final  
+    - job: PrintTargetPullRequestBranch
+      steps:
+        - script: echo TargetBranch - $(targetPullRequestBranch)
+          displayName: Target Branch Val
+        - script: echo End of Dev
+          displayName: Final  
