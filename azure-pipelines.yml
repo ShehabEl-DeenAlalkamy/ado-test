@@ -15,27 +15,37 @@ pool:
 variables:
   sourceBranch: $[variables['Build.SourceBranch']]
   targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
+  templateDest: templates/CI-CD.yml
 
 stages:
-- stage: Dev1
-  displayName: Dev Stage 1
-  condition: and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  # condition: and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.PullRequest.TargetBranch'], 'dev'))
-  jobs:
-    - job: PrintSourceBranch
-      steps:
-        - script: exit 1
+  - template: ${{ templateDest }}
+    parameters:
+      - stageName: 'Master'
+      - stageDisplayName: 'Master'
+      - namespace: 'taas-core'
+      - buildReason: 'IndividualCI'
+      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  
+  - template: ${{ templateDest }}
+    parameters:
+      - stageName: 'Dev'
+      - stageDisplayName: 'Dev'
+      - namespace: 'taas-core-dev'
+      - buildReason: 'IndividualCI'
+      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
-        - script: echo SourceBranch - $(sourceBranch)
-          displayName: Source Branch Val
+  - template: ${{ templateDest }}
+    parameters:
+      - stageName: 'Test'
+      - stageDisplayName: 'Test'
+      - namespace: 'taas-core-test'
+      - buildReason: 'IndividualCI'
+      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
 
-- stage: Dev2
-  displayName: Dev Stage 2
-  condition: succeededOrFailed()
-  jobs:
-    - job: PrintTargetPullRequestBranch
-      steps:
-        - script: echo TargetBranch - $(targetPullRequestBranch)
-          displayName: Target Branch Val
-        - script: echo End of Dev
-          displayName: Final  
+  - template: ${{ templateDest }}
+    parameters:
+      - stageName: 'Prod'
+      - stageDisplayName: 'Prod'
+      - namespace: 'taas-core-prod'
+      - buildReason: 'IndividualCI'
+      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/prod')]  
