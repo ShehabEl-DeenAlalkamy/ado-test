@@ -4,14 +4,14 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- dev
-- test
-- prod
+  - master
+  - dev
+  - test
+  - prod
 
 pool:
   vmImage: ubuntu-latest
-   
+
 variables:
   sourceBranch: $[variables['Build.SourceBranch']]
   targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
@@ -20,32 +20,32 @@ variables:
 stages:
   - template: ${{ templateDest }}
     parameters:
-      - stageName: 'Master'
-      - stageDisplayName: 'Master'
-      - namespace: 'taas-core'
-      - buildReason: 'IndividualCI'
-      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
-  
-  - template: ${{ templateDest }}
-    parameters:
-      - stageName: 'Dev'
-      - stageDisplayName: 'Dev'
-      - namespace: 'taas-core-dev'
-      - buildReason: 'IndividualCI'
-      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
+      stageName: "Master"
+      stageDisplayName: "Master"
+      namespace: "taas-core"
+      buildReason: "IndividualCI"
+      isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
   - template: ${{ templateDest }}
     parameters:
-      - stageName: 'Test'
-      - stageDisplayName: 'Test'
-      - namespace: 'taas-core-test'
-      - buildReason: 'IndividualCI'
-      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+      stageName: "Dev"
+      stageDisplayName: "Dev"
+      namespace: "taas-core-dev"
+      buildReason: "IndividualCI"
+      isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
   - template: ${{ templateDest }}
     parameters:
-      - stageName: 'Prod'
-      - stageDisplayName: 'Prod'
-      - namespace: 'taas-core-prod'
-      - buildReason: 'IndividualCI'
-      - isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/prod')]  
+      stageName: "Test"
+      stageDisplayName: "Test"
+      namespace: "taas-core-test"
+      buildReason: "IndividualCI"
+      isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+
+  - template: ${{ templateDest }}
+    parameters:
+      stageName: "Prod"
+      stageDisplayName: "Prod"
+      namespace: "taas-core-prod"
+      buildReason: "IndividualCI"
+      isTargetBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/prod')]
