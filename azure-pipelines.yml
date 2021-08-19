@@ -44,7 +44,9 @@ stages:
       - stage: bla
         condition: always()
         jobs:
-          - script: ${{ environment }}
+          - job: hawhaw
+            steps:
+              - script: ${{ environment }}
       - template: ${{ variables.templateDest }}
         parameters:
           isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
