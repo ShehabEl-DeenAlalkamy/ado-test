@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const DB_URL = process.env.MONGODB_URL || "localhost";
+const DB_URL = process.env.MONGODB_URL || "localhostbla";
 const MONGODB_PORT = 27017;
 
 const PORT = 3000;
