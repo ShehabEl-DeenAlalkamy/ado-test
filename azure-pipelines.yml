@@ -28,7 +28,7 @@ stages:
         displayName: Source Branch Val
 
 - stage: Dev2
-  displayName: Dev Stage 1
+  displayName: Dev Stage 2
   jobs:
   - job: PrintTargetPullRequestBranch
     steps:
