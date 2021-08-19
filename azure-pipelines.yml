@@ -20,22 +20,22 @@ parameters:
         env: "dev"
         stageName: "Dev"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/dev"
+        name: "refs/heads/dev"
       test:
         env: test
         stageName: "Test"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/test"
+        name: "refs/heads/test"
       pprd:
         env: "pprd"
         stageName: "PPrd"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/pprd"
+        name: "refs/heads/pprd"
       prod:
         env: "prod"
         stageName: "Prod"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/prod"
+        name: "refs/heads/prod"
 
 variables:
   templateDest: templates/CI-CD.yml
@@ -48,7 +48,7 @@ stages:
           # isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/${{ env.value.env }}') }}
           dummy: ${{ variables.isTarget }}
           ${{ each pair in env.value }}:
-            ${{ if eq(pair.key, "branchName") }}:
+            ${{ if eq(pair.key, 'name') }}:
                 isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
             ${{ pair.key }}: ${{ pair.value }}
 
