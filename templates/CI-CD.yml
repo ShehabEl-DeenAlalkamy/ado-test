@@ -1,7 +1,7 @@
 parameters:
-  # - name: stageName
-  #   default: ""
-  #   type: string
+  - name: stageName
+    default: ""
+    type: string
 
   # - name: stageDisplayName
   #   default: ''
@@ -18,16 +18,16 @@ parameters:
   # - name: isTargetBranch
   #   default: true
   #   type: boolean
-  - name: env
-    type: string
-    default: ''
+  # - name: environment
+  #   type: string
+  #   default: ''
     # default:
     #   env: "dev"
     #   stageName: "Dev"
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: $( parameters.environments.$(parameters.env).stageName ) 
+  - stage: ${{ parameters.stageName }} 
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
