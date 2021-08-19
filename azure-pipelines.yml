@@ -40,9 +40,14 @@ parameters:
 variables:
   templateDest: templates/CI-CD.yml
 
-stages:
-  - ${{ each env in parameters.environments }}:
-      - template: ${{ variables.templateDest }}
-        parameters:
-          ${{ each pair in env }}:
-              stageName: ${{ pair.value.stageName }}
+jobs:
+  - job: bla
+    steps:
+      - ${{ each env in parameters.environments }}:
+          - script: echo ${{ env }}
+# stages:
+#   - ${{ each env in parameters.environments }}:
+#       - template: ${{ variables.templateDest }}
+#         parameters:
+#           ${{ each pair in env }}:
+#               stageName: ${{ pair.value.stageName }}
