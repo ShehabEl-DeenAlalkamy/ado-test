@@ -1,31 +1,33 @@
-# parameters:
-#   # - name: stageName
-#   #   default: ''
-#   #   type: string
+parameters:
+  # - name: stageName
+  #   default: ''
+  #   type: string
 
-#   # - name: stageDisplayName
-#   #   default: ''
-#   #   type: string
+  # - name: stageDisplayName
+  #   default: ''
+  #   type: string
 
-#   # - name: namespace
-#   #   default: ''
-#   #   type: string
+  # - name: namespace
+  #   default: ''
+  #   type: string
 
-#   # - name: buildReason
-#   #   default: 'IndividualCI'
-#   #   type: string
+  # - name: buildReason
+  #   default: 'IndividualCI'
+  #   type: string
 
-#   # - name: isTargetBranch
-#   #   default: true
-#   #   type: boolean
-#   - name: environment
-#     default: ""
-#     type: string
+  # - name: isTargetBranch
+  #   default: true
+  #   type: boolean
+  - name: environment
+    default: ""
+    type: string
 
 stages:
   - stage: ${{ variables.stageName }}
     displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
+    variables: 
+      - template: vars/vars-{{ parameters.environment }}.yml
     jobs:
       - job: Test
         displayName: Test
