@@ -18,17 +18,18 @@ parameters:
   # - name: isTargetBranch
   #   default: true
   #   type: boolean
-  - name: environment
-    type: object
+  - name: env
+    type: string
+    default: ''
     # default:
     #   env: "dev"
     #   stageName: "Dev"
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ parameters.environment.stageName }} 
+  - stage: ${{ parameters.environments.${{ parameters.env }}.stageName }} 
     # displayName: ${{ variables.stageDisplayName }}
-    condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.environment.buildReason }}'))
+    condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
       - template: vars/vars-test.yml
     jobs:
