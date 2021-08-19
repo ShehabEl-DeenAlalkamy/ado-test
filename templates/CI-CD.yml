@@ -21,13 +21,13 @@ parameters:
 
 stages:
 - stage: ${{ parameters.stageName }} 
-  displayName: ${{ parameters.buildReason }} and ${{ parameters.isTargetBranch }}
+  displayName: ${{ parameters.stageDisplayName }}
   condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
   jobs:
     - job: Test
       displayName: Test
       steps:
-        - script: exit 1
+        - script: echo Test
 
     - job: BuildAndDeploy
       displayName: Build & Depoly

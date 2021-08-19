@@ -34,14 +34,13 @@ stages:
       buildReason: "IndividualCI"
       isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
 
-  # Triggered Only if a pull request to master branch was initiated
   - template: ${{ variables.templateDest }}
     parameters:
-      stageName: "MasterPullRequest"
-      stageDisplayName: "Master Pull Request"
+      stageName: "Test"
+      stageDisplayName: "Test"
       namespace: "taas-core-test"
-      buildReason: "PullRequest"
-      isTargetBranch: ${{ eq(variables['System.PullRequest.TargetBranch'], 'test') }}
+      buildReason: "IndividualCI"
+      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'test') }}
 
   - template: ${{ variables.templateDest }}
     parameters:
