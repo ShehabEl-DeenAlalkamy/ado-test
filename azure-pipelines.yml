@@ -20,11 +20,12 @@ parameters:
       - test
       - pprd
       - prod
-  - name: templateDest
-    default: templates/CI-CD.yml
+  
+variables:
+  - templateDest: templates/CI-CD.yml
 
 stages:
   - ${{ each env in parameters.environments }}:
-      - template: ${{ parameters.templateDest }}
+      - template: ${{ variables.templateDest }}
         parameters:
-          template: templates/vars/vars-${{ env }}.yml
+          environment: ${{ env }}

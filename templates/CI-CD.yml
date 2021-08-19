@@ -1,28 +1,34 @@
 parameters:
-  - name: stageName
-    default: ''
-    type: string
+  # - name: stageName
+  #   default: ''
+  #   type: string
 
-  - name: stageDisplayName
-    default: ''
-    type: string  
+  # - name: stageDisplayName
+  #   default: ''
+  #   type: string  
 
-  - name: namespace
-    default: ''
-    type: string  
+  # - name: namespace
+  #   default: ''
+  #   type: string  
 
-  - name: buildReason
-    default: 'IndividualCI'
-    type: string 
+  # - name: buildReason
+  #   default: 'IndividualCI'
+  #   type: string 
 
-  - name: isTargetBranch 
-    default: true
-    type: boolean
+  # - name: isTargetBranch 
+  #   default: true
+  #   type: boolean
+    - name: environment
+      default: ''
+      type: string
+
+variables:
+  - template: vars/vars-${{ parameters.environment }}.yml
 
 stages:
-- stage: ${{ parameters.stageName }} 
-  displayName: ${{ parameters.stageDisplayName }}
-  condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
+- stage: ${{ variables.stageName }} 
+  displayName: ${{ variables.stageDisplayName }}
+  condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
   jobs:
     - job: Test
       displayName: Test
@@ -35,7 +41,7 @@ stages:
       steps:
         - script: echo Build Image
         - script: echo Push Image
-        - script: echo Deploy to ${{ parameters.namespace }}
+        - script: echo Deploy to ${{ variables.namespace }}
         - script: echo RollBack
     
     - job: SendErrorNotification
