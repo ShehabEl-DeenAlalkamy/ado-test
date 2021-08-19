@@ -26,11 +26,11 @@ parameters:
       buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ parameters.stageName }} and ${{ parameters.isTargetBranch }}
+  - stage: ${{ parameters.environment.stageName }} and ${{ parameters.environment.isTargetBranch }}
     # displayName: ${{ variables.stageDisplayName }}
-    condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'))
+    condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.environment.buildReason }}'))
     variables:
-      - template: vars/vars-${{ parameters.environment }}.yml
+      - template: vars/vars-${{ parameters.environment.env }}.yml
     jobs:
       - job: test
         displayName: ${{ variables.buildReason }} and ${{ variables.isTargetBranch }}
