@@ -1,52 +1,49 @@
-parameters:
-  # - name: stageName
-  #   default: ''
-  #   type: string
+# parameters:
+#   # - name: stageName
+#   #   default: ''
+#   #   type: string
 
-  # - name: stageDisplayName
-  #   default: ''
-  #   type: string  
+#   # - name: stageDisplayName
+#   #   default: ''
+#   #   type: string
 
-  # - name: namespace
-  #   default: ''
-  #   type: string  
+#   # - name: namespace
+#   #   default: ''
+#   #   type: string
 
-  # - name: buildReason
-  #   default: 'IndividualCI'
-  #   type: string 
+#   # - name: buildReason
+#   #   default: 'IndividualCI'
+#   #   type: string
 
-  # - name: isTargetBranch 
-  #   default: true
-  #   type: boolean
-    - name: environment
-      default: ''
-      type: string
-
-variables:
-  - template: vars/vars-${{ parameters.environment }}.yml
+#   # - name: isTargetBranch
+#   #   default: true
+#   #   type: boolean
+#   - name: environment
+#     default: ""
+#     type: string
 
 stages:
-- stage: ${{ variables.stageName }} 
-  displayName: ${{ variables.stageDisplayName }}
-  condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
-  jobs:
-    - job: Test
-      displayName: Test
-      steps:
-        - script: exit 1
+  - stage: ${{ variables.stageName }}
+    displayName: ${{ variables.stageDisplayName }}
+    condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
+    jobs:
+      - job: Test
+        displayName: Test
+        steps:
+          - script: exit 1
 
-    - job: BuildAndDeploy
-      displayName: Build & Depoly
-      dependsOn: Test
-      steps:
-        - script: echo Build Image
-        - script: echo Push Image
-        - script: echo Deploy to ${{ variables.namespace }}
-        - script: echo RollBack
-    
-    - job: SendErrorNotification
-      displayName: Send Error Notification
-      dependsOn: Test
-      condition: failed()
-      steps:
-        - script: echo Sending Notification to Development Team
+      - job: BuildAndDeploy
+        displayName: Build & Depoly
+        dependsOn: Test
+        steps:
+          - script: echo Build Image
+          - script: echo Push Image
+          - script: echo Deploy to ${{ variables.namespace }}
+          - script: echo RollBack
+
+      - job: SendErrorNotification
+        displayName: Send Error Notification
+        dependsOn: Test
+        condition: failed()
+        steps:
+          - script: echo Sending Notification to Development Team

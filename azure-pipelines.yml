@@ -27,5 +27,5 @@ variables:
 stages:
   - ${{ each env in parameters.environments }}:
       - template: ${{ variables.templateDest }}
-        parameters:
-          environment: ${{ env }}
+        variables:
+          - template: templates/vars/vars-${{ env }}.yml
