@@ -49,6 +49,6 @@ stages:
           dummy: ${{ variables.isTarget }}
           ${{ each pair in env.value }}:
             ${{ if eq(pair.key, 'branchName') }}:
-                isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}' }}
+                isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ pair.value }}') }}
             ${{ pair.key }}: ${{ pair.value }}
 
