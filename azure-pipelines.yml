@@ -30,7 +30,7 @@ stages:
 - stage: Dev2
   displayName: Dev Stage 2
   dependsOn: Dev1
-  condition: failed()
+  condition: skipped()
   jobs:
   - job: PrintTargetPullRequestBranch
     steps:
