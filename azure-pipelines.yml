@@ -17,22 +17,22 @@ parameters:
     type: object
     default:
       - dev:
-          env: "dev"
+          # env: "dev"
           stageName: "Dev"
           buildReason: "IndividualCI"
           # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/dev') ]
       - test:
-          env: "test"
+          # env: "test"
           stageName: "Test"
           buildReason: "IndividualCI"
           # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/test') ]
       - pprd:
-          env: "pprd"
+          # env: "pprd"
           stageName: "PPrd"
           buildReason: "IndividualCI"
           # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') ]
       - prod:
-          env: "prod"
+          # env: "prod"
           stageName: "Prod"
           buildReason: "IndividualCI"
           # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/prod') ]
