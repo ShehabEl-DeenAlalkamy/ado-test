@@ -30,7 +30,7 @@ stages:
       - template: vars/vars-${{ parameters.environment }}.yml
     jobs:
       - job: test
-        dispayName: ${{ variables.buildReason }} and ${{ variables.isTargetBranch }}
+        displayName: ${{ variables.buildReason }} and ${{ variables.isTargetBranch }}
         steps:
           - script: echo ${{ variables.stageName }}
   # - stage: ${{ variables.stageName }}
