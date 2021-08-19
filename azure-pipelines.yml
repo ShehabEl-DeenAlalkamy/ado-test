@@ -17,22 +17,22 @@ parameters:
     type: object
     default:
       dev:
-        environment: "dev"
+        env: "dev"
         stageName: "Dev"
         buildReason: "IndividualCI"
         # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/dev') ]
       test:
-        environment: "test"
+        env: "test"
         stageName: "Test"
         buildReason: "IndividualCI"
         # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/test') ]
       pprd:
-        environment: "pprd"
+        env: "pprd"
         stageName: "PPrd"
         buildReason: "IndividualCI"
         # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') ]
       prod:
-        environment: "prod"
+        env: "prod"
         stageName: "Prod"
         buildReason: "IndividualCI"
         # isTargetBranch: $[ eq(variables['Build.SourceBranch'], 'refs/heads/prod') ]
@@ -44,5 +44,4 @@ stages:
   - ${{ each env in convertToJson(parameters.environments) }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          ${{ each pair in env }}:
-            ${{ pair.key }}: ${{ pair.value }}
+          environment: ${{ env }}

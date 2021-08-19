@@ -1,7 +1,7 @@
 parameters:
-  - name: stageName
-    default: ""
-    type: string
+  # - name: stageName
+  #   default: ""
+  #   type: string
 
   # - name: stageDisplayName
   #   default: ''
@@ -11,16 +11,19 @@ parameters:
   #   default: ''
   #   type: string
 
-  - name: buildReason
-    default: "IndividualCI"
-    type: string
+  # - name: buildReason
+  #   default: "IndividualCI"
+  #   type: string
 
-  - name: isTargetBranch
-    default: true
-    type: boolean
+  # - name: isTargetBranch
+  #   default: true
+  #   type: boolean
   - name: environment
-    default: ""
-    type: string
+    type: object
+    default:
+      env: "dev"
+      stageName: "Dev"
+      buildReason: "IndividualCI"
 
 stages:
   - stage: ${{ parameters.stageName }} and ${{ parameters.isTargetBranch }}
