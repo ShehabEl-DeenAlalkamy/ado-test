@@ -25,7 +25,6 @@ stages:
     - job: PrintSourceBranch
       steps:
         - script: exit 1
-          continueOnError: true
 
         - script: echo SourceBranch - $(sourceBranch)
           displayName: Source Branch Val
