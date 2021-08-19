@@ -20,8 +20,8 @@ parameters:
     type: boolean
 
 stages:
-- stage: ${{ parameters.stageName }} and ${{ parameters.isTargetBranch }}
-  displayName: ${{ parameters.buildReason }}
+- stage: ${{ parameters.stageName }} 
+  displayName: ${{ parameters.buildReason }} and ${{ parameters.isTargetBranch }}
   condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
   jobs:
     - job: Test
