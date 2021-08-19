@@ -22,7 +22,7 @@ parameters:
         buildReason: "IndividualCI"
         # isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
       test:
-        env: "test"
+        env: test
         stageName: "Test"
         buildReason: "IndividualCI"
         # isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
