@@ -26,20 +26,21 @@ parameters:
   - name: env
     type: string
     default: ''
+
     # default:
     #   env: "dev"
     #   stageName: "Dev"
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/${{ parameters.env }}') }} ${{ parameters.stageName }} - ${{ parameters.buildReason }} - ${{ parameters.dummy }} - ${{ parameters.isTargetBranch }} - ${{ parameters.env }}
+  - stage: sName_${{ parameters.stageName }}_isBranch_${{ eq(variables['Build.SourceBranch'], 'refs/heads/'parameters.env) }} ${{ parameters.isTargetBranch }}_reason_${{ parameters.buildReason }}_dummy_${{ parameters.dummy }}_env_${{ parameters.env }}
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
       - template: vars/vars-test.yml
     jobs:
       - job: test
-        displayName: ${{ variables.namespace }}
+        displayName: jName_${{ variables.stageName }}_ns_${{ variables.namespace }}_reason${{ variables.buildReason }}_isBranch_${{ variables.isTargetBranch }}
         steps:
           - script: echo ${{ variables.namespace }}
   # - stage: ${{ variables.stageName }}
