@@ -26,47 +26,69 @@ stages:
     variables:
       - template: vars/vars-${{ parameters.env }}.yml
     jobs:
-      # - job: TestJob
-      #   displayName: Test Job
+      - job: TestJob
+        displayName: Test Job
+        steps:
+          - script: |
+              echo 'stagename        : ${{ variables.stageName }}'
+              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+              echo 'namespace        : ${{ variables.namespace }}'
+              echo 'buildreason      : ${{ variables.buildReason }}'
+              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+            displayName: Logging File Variables
+
+      - job: TestJob2
+        displayName: Test Job2
+        steps:
+          - script: |
+              echo 'stagename        : ${{ variables.stageName }}'
+              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+              echo 'namespace        : ${{ variables.namespace }}'
+              echo 'buildreason      : ${{ variables.buildReason }}'
+              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+            displayName: Logging File Variables
+
+      - job: TestJob3
+        displayName: Test Job3
+        steps:
+          - script: |
+              echo 'stagename        : ${{ variables.stageName }}'
+              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+              echo 'namespace        : ${{ variables.namespace }}'
+              echo 'buildreason      : ${{ variables.buildReason }}'
+              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+            displayName: Logging File Variables                        
+
+      # - job: Test
+      #   displayName: Test
+      #   variables:
+      #     - template: vars/vars-${{ parameters.env }}.yml
       #   steps:
-      #     - script: |
-      #         echo 'stagename        : ${{ variables.stageName }}'
-      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
-      #         echo 'namespace        : ${{ variables.namespace }}'
-      #         echo 'buildreason      : ${{ variables.buildReason }}'
-      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
-      #       displayName: Logging File Variables
+      #     - template: steps/maven-test.yml
 
-      - job: Test
-        displayName: Test
-        variables:
-          - template: vars/vars-${{ parameters.env }}.yml
-        steps:
-          - template: steps/maven-test.yml
+      # - job: Build
+      #   displayName: Build
+      #   dependsOn: Test
+      #   steps:
+      #     - template: steps/maven-build.yml
+      #     - template: steps/artifacts.yml
 
-      - job: Build
-        displayName: Build
-        dependsOn: Test
-        steps:
-          - template: steps/maven-build.yml
-          - template: steps/artifacts.yml
+      # - job: Deploy
+      #   displayName: Deploy
+      #   dependsOn:
+      #     - Test
+      #     - Build
+      #   steps:
+      #     - template: steps/deploy-to-k8s.yml
 
-      - job: Deploy
-        displayName: Deploy
-        dependsOn:
-          - Test
-          - Build
-        steps:
-          - template: steps/deploy-to-k8s.yml
-
-      - job: TestFailureHandling
-        displayName: Error Handling
-        dependsOn:
-          - Test
-          - Build
-        condition: failed()
-        steps:
-          - template: steps/send-notifications-to-team.yml
+      # - job: TestFailureHandling
+      #   displayName: Error Handling
+      #   dependsOn:
+      #     - Test
+      #     - Build
+      #   condition: failed()
+      #   steps:
+      #     - template: steps/send-notifications-to-team.yml
 
   # - stage: ${{ variables.stageName }}
   #   displayName: ${{ variables.stageDisplayName }}
