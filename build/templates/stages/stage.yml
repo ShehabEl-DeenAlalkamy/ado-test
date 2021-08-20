@@ -81,9 +81,7 @@ stages:
 
       - job: Deploy
         displayName: Deploy
-        dependsOn:
-          - Test
-          - Build
+        dependsOn: Build
         steps:
           - template: ../steps/deploy-to-k8s.yml
             parameters:
