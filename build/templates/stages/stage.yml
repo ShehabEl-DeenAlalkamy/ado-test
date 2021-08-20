@@ -61,16 +61,16 @@ stages:
       #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
       #       displayName: Logging File Variables
 
-      - job: Test
+      - job: TestApp
         displayName: Test
         steps:
           - template: ../steps/maven-test.yml
             parameters:
               vars: ${{ variables }}
 
-      - job: Build
+      - job: BuildApp
         displayName: Build
-        dependsOn: Test
+        dependsOn: TestApp
         steps:
           - template: ../steps/maven-build.yml
             parameters:
@@ -79,9 +79,9 @@ stages:
             parameters:
               vars: ${{ variables }}
 
-      - job: Deploy
+      - job: DeployApp
         displayName: Deploy
-        dependsOn: Build
+        dependsOn: BuildApp
         steps:
           - template: ../steps/deploy-to-k8s.yml
             parameters:
@@ -90,8 +90,8 @@ stages:
       - job: TestFailureHandling
         displayName: Error Handling
         dependsOn:
-          - Test
-          - Build
+          - TestApp
+          - BuildApp
         condition: failed()
         steps:
           - template: ../steps/send-notifications-to-team.yml

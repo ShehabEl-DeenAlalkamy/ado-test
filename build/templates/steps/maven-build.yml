@@ -11,3 +11,7 @@ steps:
       echo 'buildreason      : ${{ parameters.vars.buildReason }}'
       echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
     displayName: Maven Build
+
+  # - script: |
+  #     exit 1
+  #   displayName: Maven Test
