@@ -39,6 +39,7 @@ stages:
 
       - job: TestJob2
         displayName: Test Job2
+        dependsOn: TestJob
         steps:
           - script: |
               echo 'stagename        : ${{ variables.stageName }}'
@@ -50,6 +51,7 @@ stages:
 
       - job: TestJob3
         displayName: Test Job3
+        dependsOn: TestJob2
         steps:
           - script: |
               echo 'stagename        : ${{ variables.stageName }}'
