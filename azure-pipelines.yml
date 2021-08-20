@@ -47,9 +47,9 @@ stages:
           - job: hawhaw
             steps:
               - script: ${{ environment }}
-      - template: ${{ variables.templateDest }}
-        parameters:
-          isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
-          ${{ each pair in environment }}:
-            ${{ if ne(pair.key, 'branchName') }}:
-              ${{ pair.key }}: ${{ pair.value }}
+      # - template: ${{ variables.templateDest }}
+      #   parameters:
+      #     isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
+      #     ${{ each pair in environment }}:
+      #       ${{ if ne(pair.key, 'branchName') }}:
+      #         ${{ pair.key }}: ${{ pair.value }}
