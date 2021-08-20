@@ -12,7 +12,6 @@ steps:
       echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
     displayName: Building Artifacts
 
-steps:
   - script: |
       echo 'stagename        : ${{ parameters.vars.stageName }}'
       echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
