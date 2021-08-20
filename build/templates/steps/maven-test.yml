@@ -1,16 +1,14 @@
 # You can add your params here
 parameters:
-  - name: env
-    type: string
-    default: ""
+  - name: vars
+    type: object
 
 steps:
   - script: |
-      echo 'stagename        : ${{ variables.stageName }}'
-      echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
-      echo 'namespace        : ${{ variables.namespace }}'
-      echo 'buildreason      : ${{ variables.buildReason }}'
-      echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      echo 'stagename        : ${{ vars.stageName }}'
+      echo 'stagedisplayname : ${{ vars.stageDisplayName }}'
+      echo 'namespace        : ${{ vars.namespace }}'
+      echo 'buildreason      : ${{ vars.buildReason }}'
+      echo 'istargetbranch   : ${{ vars.isTargetBranch }}'
     displayName: Maven Test
-    variables:
-      - template: ../vars/vars-${{ parameters.env }}.yml
+
