@@ -49,7 +49,7 @@ stages:
     jobs:
       - job: hawhaw
         steps:
-          - script: echo ${{ variables.effectiveBranchName }}
+          - script: echo ${{ eq(${{ variables.effectiveBranchName }}, ${{ parameters.environments[1].branchName }}) }}
   # - template: ${{ variables.templateDest }}
   #   parameters:
   #     isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
