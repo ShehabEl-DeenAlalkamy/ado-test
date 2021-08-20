@@ -19,37 +19,40 @@ parameters:
       - env: "dev"
         stageName: "Dev"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/dev"
+        branchName: "dev"
 
       - env: test
         stageName: "Test"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/test"
+        branchName: "test"
 
       - env: "pprd"
         stageName: "PPrd"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/pprd"
+        branchName: "pprd"
 
       - env: "prod"
         stageName: "Prod"
         buildReason: "IndividualCI"
-        branchName: "refs/heads/prod"
+        branchName: "prod"
 
 variables:
   templateDest: templates/CI-CD.yml
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
+    effectiveBranchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
+    effectiveBranchName: $[ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') ]
 
 stages:
-  - ${{ each environment in parameters.environments }}:
-      - stage: bla{{environment.env}}
-        condition: always()
-        jobs:
-          - job: hawhaw
-            steps:
-              - script: ${{ environment.branchName }}
-      # - template: ${{ variables.templateDest }}
-      #   parameters:
-      #     isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
-      #     ${{ each pair in environment }}:
-      #       ${{ if ne(pair.key, 'branchName') }}:
-      #         ${{ pair.key }}: ${{ pair.value }}
+  - stage: ${{ parameters.environments[1].stageName }}
+    condition: always()
+    jobs:
+      - job: hawhaw
+        steps:
+          - script: echo ${{ variables.effectiveBranchName }}
+  # - template: ${{ variables.templateDest }}
+  #   parameters:
+  #     isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
+  #     ${{ each pair in environment }}:
+  #       ${{ if ne(pair.key, 'branchName') }}:
+  #         ${{ pair.key }}: ${{ pair.value }}
