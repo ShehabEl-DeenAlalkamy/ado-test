@@ -37,6 +37,35 @@ stages:
               echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
             displayName: Logging File Variables
 
+      - job: Test
+        displayName: Test
+        steps:
+          - template: steps/maven-test.yml
+
+      - job: Build
+        displayName: Build
+        dependsOn: Test
+        steps:
+          - template: steps/maven-build.yml
+          - template: steps/artifacts.yml
+
+      - job: Deploy
+        displayName: Deploy
+        dependsOn:
+          - Test
+          - Build
+        steps:
+          - template: steps/deploy-to-k8s.yml
+
+      - job: TestFailureHandling
+        displayName: Error Handling
+        dependsOn:
+          - Test
+          - Build
+        condition: failed()
+        steps:
+          - template: steps/send-notifications-to-team.yml
+
   # - stage: ${{ variables.stageName }}
   #   displayName: ${{ variables.stageDisplayName }}
   #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})

@@ -1,0 +1,10 @@
+# You can add your params here
+
+steps:
+  - script: |
+      echo 'stagename        : ${{ variables.stageName }}'
+      echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      echo 'namespace        : ${{ variables.namespace }}'
+      echo 'buildreason      : ${{ variables.buildReason }}'
+      echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+    displayName: Maven Build

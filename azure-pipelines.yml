@@ -41,7 +41,7 @@ parameters:
         branchName: "prod"
 
 variables:
-  templateDest: templates/stage.yml
+  templateDest: build/templates/stage.yml
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
