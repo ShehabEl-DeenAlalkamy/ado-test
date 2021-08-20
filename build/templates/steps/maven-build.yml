@@ -12,9 +12,9 @@ steps:
       echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
     displayName: Maven Build
 
-  - script: |
-      exit 1
-    displayName: Maven Test
+  # - script: |
+  #     exit 1
+  #   displayName: Maven Test
 
   - script: |
       echo 'stagename        : ${{ parameters.vars.stageName }}'
