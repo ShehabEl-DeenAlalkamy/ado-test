@@ -37,36 +37,36 @@ stages:
               echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
             displayName: Logging File Variables
 
-      - job: TestJob2
-        displayName: Test Job2
-        dependsOn: TestJob
-        steps:
-          - script: |
-              echo 'stagename        : ${{ variables.stageName }}'
-              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
-              echo 'namespace        : ${{ variables.namespace }}'
-              echo 'buildreason      : ${{ variables.buildReason }}'
-              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
-            displayName: Logging File Variables
-
-      - job: TestJob3
-        displayName: Test Job3
-        dependsOn: TestJob2
-        steps:
-          - script: |
-              echo 'stagename        : ${{ variables.stageName }}'
-              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
-              echo 'namespace        : ${{ variables.namespace }}'
-              echo 'buildreason      : ${{ variables.buildReason }}'
-              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
-            displayName: Logging File Variables                        
-
-      # - job: Test
-      #   displayName: Test
-      #   variables:
-      #     - template: vars/vars-${{ parameters.env }}.yml
+      # - job: TestJob2
+      #   displayName: Test Job2
+      #   dependsOn: TestJob
       #   steps:
-      #     - template: steps/maven-test.yml
+      #     - script: |
+      #         echo 'stagename        : ${{ variables.stageName }}'
+      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      #         echo 'namespace        : ${{ variables.namespace }}'
+      #         echo 'buildreason      : ${{ variables.buildReason }}'
+      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      #       displayName: Logging File Variables
+
+      # - job: TestJob3
+      #   displayName: Test Job3
+      #   dependsOn: TestJob2
+      #   steps:
+      #     - script: |
+      #         echo 'stagename        : ${{ variables.stageName }}'
+      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      #         echo 'namespace        : ${{ variables.namespace }}'
+      #         echo 'buildreason      : ${{ variables.buildReason }}'
+      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      #       displayName: Logging File Variables                        
+
+      - job: Test
+        displayName: Test
+        steps:
+          - template: steps/maven-test.yml
+            parameters:
+              env: ${{ parameters.env }}
 
       # - job: Build
       #   displayName: Build
