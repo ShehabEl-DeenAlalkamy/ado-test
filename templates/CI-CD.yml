@@ -30,12 +30,13 @@ stages:
         displayName: Test Job
         steps:
           - script: |
-              echo stagename        : ${{ variables.stageName }}
-              echo stagedisplayname : ${{ variables.stageDisplayName }}
-              echo namespace        : ${{ variables.namespace }}
-              echo buildreason      : ${{ variables.buildReason }}
-              echo istargetbranch   : ${{ variables.isTargetBranch }}
+              echo 'stagename        : ${{ variables.stageName }}'
+              echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+              echo 'namespace        : ${{ variables.namespace }}'
+              echo 'buildreason      : ${{ variables.buildReason }}'
+              echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
             displayName: Logging File Variables
+
   # - stage: ${{ variables.stageName }}
   #   displayName: ${{ variables.stageDisplayName }}
   #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})

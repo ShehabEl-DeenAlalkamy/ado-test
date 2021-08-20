@@ -51,10 +51,10 @@ stages:
   - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
-          isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
           ${{ each pair in environment }}:
             ${{ if ne(pair.key, 'branchName') }}:
               ${{ pair.key }}: ${{ pair.value }}
+          isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
 
   # - stage: ${{ parameters.environments[1].stageName }}
   #   condition: always()
