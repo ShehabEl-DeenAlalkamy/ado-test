@@ -48,6 +48,7 @@ stages:
     condition: always()
     jobs:
       - job: hawhaw
+        displayName: ${{ eq(variables.effectiveBranchName, parameters.environments[0].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[2].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[3].branchName) }}
         steps:
           - script: echo ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }}
   # - template: ${{ variables.templateDest }}
