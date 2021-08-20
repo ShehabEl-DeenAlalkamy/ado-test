@@ -1,48 +1,41 @@
 parameters:
+  - name: env
+    type: string
+    default: ""
+
   - name: stageName
     default: ""
     type: string
 
-  # - name: stageDisplayName
-  #   default: ''
-  #   type: string
-
-  # - name: namespace
-  #   default: ''
-  #   type: string
-
-  - name: buildReason
-    default: ''
+  - name: stageDisplayName
+    default: ""
     type: string
 
-  - name: dummy
-    default: ''
+  - name: buildReason
+    default: ""
     type: string
 
   - name: isTargetBranch
     default: true
     type: boolean
 
-  - name: env
-    type: string
-    default: ''
-
-    # default:
-    #   env: "dev"
-    #   stageName: "Dev"
-    #   buildReason: "IndividualCI"
-
 stages:
-  - stage: sName_${{ parameters.stageName }}_isBranch_${{ parameters.isTargetBranch }}_reason_${{ parameters.buildReason }}_dummy_${{ parameters.dummy }}_env_${{ parameters.env }}
-    # displayName: ${{ variables.stageDisplayName }}
-    condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
+  - stage: ${{ parameters.stageName }}
+    displayName: ${{ parameters.stageDisplayName }}
+    condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     variables:
-      - template: vars/vars-test.yml
+      - template: vars/vars-${{ parameters.env }}.yml
     jobs:
-      - job: test
-        displayName: jName_${{ variables.stageName }}_ns_${{ variables.namespace }}_reason${{ variables.buildReason }}_isBranch_${{ variables.isTargetBranch }}
+      - job: TestJob
+        displayName: Test Job
         steps:
-          - script: echo ${{ variables.namespace }}
+          - script: |
+              echo stagename        : ${{ variables.stageName }}
+              echo stagedisplayname : ${{ variables.stageDisplayName }}
+              echo namespace        : ${{ variables.namespace }}
+              echo buildreason      : ${{ variables.buildReason }}
+              echo istargetbranch   : ${{ variables.isTargetBranch }}
+            displayName: Logging File Variables
   # - stage: ${{ variables.stageName }}
   #   displayName: ${{ variables.stageDisplayName }}
   #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
