@@ -1,5 +1,10 @@
 # You can add your params here
+parameters:
+  - name: env
+    type: string
+    default: ""
 
+variables: ../vars/vars-${{ parameters.env }}.yml
 steps:
   - script: |
       echo 'stagename        : ${{ variables.stageName }}'
