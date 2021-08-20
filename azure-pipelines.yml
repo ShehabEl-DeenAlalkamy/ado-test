@@ -44,16 +44,18 @@ variables:
     effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
 
 stages:
-  - stage: ${{ parameters.environments[1].stageName }}
-    condition: always()
-    jobs:
-      - job: hawhaw
-        displayName: ${{ eq(variables.effectiveBranchName, parameters.environments[0].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[2].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[3].branchName) }}
-        steps:
-          - script: echo ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }}
-  # - template: ${{ variables.templateDest }}
-  #   parameters:
-  #     isTargetBranch: ${{ eq(variables['Build.SourceBranch'], '${{ environment.branchName }}') }}
-  #     ${{ each pair in environment }}:
-  #       ${{ if ne(pair.key, 'branchName') }}:
-  #         ${{ pair.key }}: ${{ pair.value }}
+  # - stage: ${{ parameters.environments[1].stageName }}
+  #   condition: always()
+  #   jobs:
+  #     - job: hawhaw
+  #       displayName: ${{ eq(variables.effectiveBranchName, parameters.environments[0].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[2].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[3].branchName) }}
+  #       steps:
+  #         - script: echo ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }}
+
+  - ${{ each environment in parameters.environments }}:
+      - template: ${{ variables.templateDest }}
+        parameters:
+          isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
+          ${{ each pair in environment }}:
+            ${{ if ne(pair.key, 'branchName') }}:
+              ${{ pair.key }}: ${{ pair.value }}
