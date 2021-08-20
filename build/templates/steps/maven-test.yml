@@ -5,10 +5,10 @@ parameters:
 
 steps:
   - script: |
-      echo 'stagename        : ${{ vars.stageName }}'
-      echo 'stagedisplayname : ${{ vars.stageDisplayName }}'
-      echo 'namespace        : ${{ vars.namespace }}'
-      echo 'buildreason      : ${{ vars.buildReason }}'
-      echo 'istargetbranch   : ${{ vars.isTargetBranch }}'
+      echo 'stagename        : ${{ parameters.vars.stageName }}'
+      echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
+      echo 'namespace        : ${{ parameters.vars.namespace }}'
+      echo 'buildreason      : ${{ parameters.vars.buildReason }}'
+      echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
     displayName: Maven Test
 
