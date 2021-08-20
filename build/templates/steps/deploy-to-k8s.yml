@@ -10,6 +10,8 @@ steps:
       echo 'namespace        : ${{ parameters.vars.namespace }}'
       echo 'buildreason      : ${{ parameters.vars.buildReason }}'
       echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
+      ls
+      pwd
     displayName: Deploy Microservice
 
   - script: |
