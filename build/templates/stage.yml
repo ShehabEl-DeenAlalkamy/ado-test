@@ -39,6 +39,8 @@ stages:
 
       - job: Test
         displayName: Test
+        variables:
+          - template: vars/vars-${{ parameters.env }}.yml
         steps:
           - template: steps/maven-test.yml
 
