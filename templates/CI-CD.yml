@@ -33,7 +33,7 @@ parameters:
     #   buildReason: "IndividualCI"
 
 stages:
-  - stage: sName_${{ parameters.stageName }}_isBranch_${{ eq(variables['Build.SourceBranch'], refs/heads/parameters['env']) }} ${{ parameters.isTargetBranch }}_reason_${{ parameters.buildReason }}_dummy_${{ parameters.dummy }}_env_${{ parameters.env }}
+  - stage: sName_${{ parameters.stageName }}_isBranch_${{ eq(variables['Build.SourceBranch'], 'refs/heads/parameters[\'env\']') }} ${{ parameters.isTargetBranch }}_reason_${{ parameters.buildReason }}_dummy_${{ parameters.dummy }}_env_${{ parameters.env }}
     # displayName: ${{ variables.stageDisplayName }}
     condition: and(always(), eq(variables['Build.Reason'], 'IndividualCI'))
     variables:
