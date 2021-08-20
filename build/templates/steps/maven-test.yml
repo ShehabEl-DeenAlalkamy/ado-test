@@ -4,7 +4,8 @@ parameters:
     type: string
     default: ""
 
-variables: ../vars/vars-${{ parameters.env }}.yml
+variables: 
+  - template: ../vars/vars-${{ parameters.env }}.yml
 steps:
   - script: |
       echo 'stagename        : ${{ variables.stageName }}'
