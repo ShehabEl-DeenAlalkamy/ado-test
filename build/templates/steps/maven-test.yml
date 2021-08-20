@@ -4,8 +4,6 @@ parameters:
     type: string
     default: ""
 
-variables: 
-  - template: ../vars/vars-${{ parameters.env }}.yml
 steps:
   - script: |
       echo 'stagename        : ${{ variables.stageName }}'
@@ -14,3 +12,5 @@ steps:
       echo 'buildreason      : ${{ variables.buildReason }}'
       echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
     displayName: Maven Test
+    variables:
+      - template: ../vars/vars-${{ parameters.env }}.yml
