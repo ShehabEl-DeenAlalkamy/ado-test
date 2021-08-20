@@ -39,9 +39,9 @@ parameters:
 variables:
   templateDest: templates/CI-CD.yml
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
-    effectiveBranchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+    effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    effectiveBranchName: $[ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') ]
+    effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
 
 stages:
   - stage: ${{ parameters.environments[1].stageName }}
