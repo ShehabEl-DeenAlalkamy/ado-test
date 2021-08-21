@@ -15,10 +15,14 @@ parameters:
     default: ""
     type: string
 
+  - name: isTargetBranch
+    default: true
+    type: boolean
+
 stages:
   - stage: ${{ parameters.stageName }}
     displayName: ${{ parameters.stageDisplayName }}
-    condition: and(always(), eq(variables['Build.Reason'], '${{ parameters.buildReason }}'))
+    condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     variables:
       - template: ../vars/vars-${{ parameters.env }}.yml
     jobs:
