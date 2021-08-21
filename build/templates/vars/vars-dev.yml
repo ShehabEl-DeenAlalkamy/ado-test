@@ -1,0 +1,6 @@
+variables:
+  stageName: "Dev"
+  stageDisplayName: "Dev"
+  namespace: "taas-core-dev"
+  buildReason: "IndividualCI"
+  isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}

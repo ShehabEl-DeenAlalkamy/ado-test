@@ -1,4 +1,5 @@
 FROM node
+# another comment
 # hello-vois application path 
 ENV APP_PATH /usr/src/hello-vois
 WORKDIR ${APP_PATH}
