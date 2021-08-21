@@ -1,0 +1,23 @@
+# You can add your params here
+parameters:
+  - name: vars
+    type: object
+
+steps:
+  - script: |
+      echo 'stagename        : ${{ parameters.vars.stageName }}'
+      echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
+      echo 'namespace        : ${{ parameters.vars.namespace }}'
+      echo 'buildreason      : ${{ parameters.vars.buildReason }}'
+      echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
+      ls
+      pwd
+    displayName: Deploy Microservice
+
+  - script: |
+      echo 'stagename        : ${{ parameters.vars.stageName }}'
+      echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
+      echo 'namespace        : ${{ parameters.vars.namespace }}'
+      echo 'buildreason      : ${{ parameters.vars.buildReason }}'
+      echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
+    displayName: Deployment Rolling Restart

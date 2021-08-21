@@ -1,0 +1,126 @@
+parameters:
+  - name: env
+    type: string
+    default: ""
+
+  - name: stageName
+    default: ""
+    type: string
+
+  - name: stageDisplayName
+    default: ""
+    type: string
+
+  - name: buildReason
+    default: ""
+    type: string
+
+  - name: isTargetBranch
+    default: true
+    type: boolean
+
+stages:
+  - stage: ${{ parameters.stageName }}
+    displayName: ${{ parameters.stageDisplayName }}
+    condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
+    variables:
+      - template: ../vars/vars-${{ parameters.env }}.yml
+    jobs:
+      # - job: TestJob
+      #   displayName: Test Job
+      #   steps:
+      #     - script: |
+      #         echo 'stagename        : ${{ variables.stageName }}'
+      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      #         echo 'namespace        : ${{ variables.namespace }}'
+      #         echo 'buildreason      : ${{ variables.buildReason }}'
+      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      #       displayName: Logging File Variables
+
+      # - job: TestJob2
+      #   displayName: Test Job2
+      #   dependsOn: TestJob
+      #   steps:
+      #     - script: |
+      #         echo 'stagename        : ${{ variables.stageName }}'
+      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      #         echo 'namespace        : ${{ variables.namespace }}'
+      #         echo 'buildreason      : ${{ variables.buildReason }}'
+      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      #       displayName: Logging File Variables
+
+      # - job: TestJob3
+      #   displayName: Test Job3
+      #   dependsOn: TestJob2
+      #   steps:
+      #     - script: |
+      #         echo 'stagename        : ${{ variables.stageName }}'
+      #         echo 'stagedisplayname : ${{ variables.stageDisplayName }}'
+      #         echo 'namespace        : ${{ variables.namespace }}'
+      #         echo 'buildreason      : ${{ variables.buildReason }}'
+      #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
+      #       displayName: Logging File Variables
+
+      - job: TestApp
+        displayName: Test
+        steps:
+          - template: ../steps/maven-test.yml
+            parameters:
+              vars: ${{ variables }}
+
+      - job: BuildApp
+        displayName: Build
+        dependsOn: TestApp
+        steps:
+          - template: ../steps/maven-build.yml
+            parameters:
+              vars: ${{ variables }}
+          - template: ../steps/artifacts.yml
+            parameters:
+              vars: ${{ variables }}
+
+      - job: DeployApp
+        displayName: Deploy
+        dependsOn: BuildApp
+        steps:
+          - template: ../steps/deploy-to-k8s.yml
+            parameters:
+              vars: ${{ variables }}
+
+      - job: TestFailureHandling
+        displayName: Error Handling
+        dependsOn:
+          - TestApp
+          - BuildApp
+        condition: failed()
+        steps:
+          - template: ../steps/send-notifications-to-team.yml
+            parameters:
+              vars: ${{ variables }}
+
+  # - stage: ${{ variables.stageName }}
+  #   displayName: ${{ variables.stageDisplayName }}
+  #   condition: and(always(), eq(variables['Build.Reason'], '${{ variables.buildReason }}'), ${{ variables.isTargetBranch }})
+  #   variables:
+  #     - template: vars/vars-${{ parameters.environment }}.yml
+  #   jobs:
+  #     - job: Test
+  #       displayName: Test
+  #       steps:
+  #         - script: exit 1
+
+  #     - job: BuildAndDeploy
+  #       displayName: Build & Depoly
+  #       dependsOn: Test
+  #       steps:
+  #         - script: echo Build Image
+  #         - script: echo Push Image
+  #         - script: echo Deploy to ${{ variables.namespace }}
+  #         - script: echo RollBack
+
+  #     - job: SendErrorNotification
+  #       displayName: Send Error Notification
+  #       dependsOn: Test
+  #       condition: failed()
+  #       steps:
+  #         - script: echo Sending Notification to Development Team
