@@ -62,6 +62,7 @@ stages:
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
               echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
               echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
+              
 
 
   # - ${{ each environment in parameters.environments }}:
