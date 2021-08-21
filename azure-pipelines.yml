@@ -43,6 +43,7 @@ parameters:
         branchName: "prod"
 
 variables:
+  prTemplateDest: build/templates/stages/pr.yml
   templateDest: build/templates/stages/stage.yml
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
@@ -54,17 +55,9 @@ stages:
   - stage: Logger
     jobs:
       - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-          - job: PRLogInfo
-            displayName: PR Logger
-            steps:
-              - script: |
-                  echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
-                  echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
-                  echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
-                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
-                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables.System.PullRequest.TargetBranch }}'
-                  echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
-                  echo 'variables.shortHandPRTargetBranch           : ${{ variables['shortHandPRTargetBranch'] }}'
+          - template: ${{ variables.prTemplateDest }}
+            parameters:
+              vars: ${{ variables }}
 
       - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
           - job: CILogInfo
