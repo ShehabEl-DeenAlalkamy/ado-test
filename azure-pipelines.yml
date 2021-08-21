@@ -56,7 +56,7 @@ stages:
               echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
               echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
-              echo 'variables.effectiveBranchName               : ${{ variables['Build.SourceBranch'] }}'
+              echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
 
   # - ${{ each environment in parameters.environments }}:
   #     - template: ${{ variables.templateDest }}
