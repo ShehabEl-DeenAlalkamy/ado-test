@@ -44,19 +44,37 @@ variables:
   templateDest: build/templates/stages/stage.yml
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
+    # targetBranch: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
+    effectiveBranchName: ${{ replace(variables.System.PullRequest.TargetBranch, 'refs/heads/', '') }}
+    targetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
   - stage: dummy
     jobs:
+      - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+          - job: LogInfo
+            steps:
+              - script: |
+                  echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
+                  echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
+                  echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
+                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+
+                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables.System.PullRequest.TargetBranch }}'
+
+                  echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
+                  echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
+
       - job: hawhaw
-        steps: 
+        steps:
           - script: |
               echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
               echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+              echo 'variables.System.PullRequest.TargetBranch   : $(System.PullRequest.TargetBranch)'
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
               echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
+              echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
 
   # - ${{ each environment in parameters.environments }}:
   #     - template: ${{ variables.templateDest }}
