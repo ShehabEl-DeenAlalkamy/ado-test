@@ -49,6 +49,7 @@ variables:
     effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
     targetBranch: $(System.PullRequest.TargetBranch)
 
+
 stages:
   - stage: dummy
     jobs:
@@ -63,6 +64,7 @@ stages:
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
               echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
               echo 'variables.effectiveBranchName               : ${{ variables['targetBranch'] }}'
+
 
   # - ${{ each environment in parameters.environments }}:
   #     - template: ${{ variables.templateDest }}

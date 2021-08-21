@@ -1,0 +1,6 @@
+variables:
+  stageName: "Pprd"
+  stageDisplayName: "Pprd"
+  namespace: "taas-core-pprd"
+  buildReason: "IndividualCI"
+  isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/pprd') }}

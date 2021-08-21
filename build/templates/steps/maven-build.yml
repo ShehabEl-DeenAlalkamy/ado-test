@@ -1,0 +1,27 @@
+# You can add your params here
+parameters:
+  - name: vars
+    type: object
+
+steps:
+  - script: |
+      echo 'stagename        : ${{ parameters.vars.stageName }}'
+      echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
+      echo 'namespace        : ${{ parameters.vars.namespace }}'
+      echo 'buildreason      : ${{ parameters.vars.buildReason }}'
+      echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
+      ls
+      pwd
+    displayName: Maven Build
+
+  # - script: |
+  #     exit 1
+  #   displayName: Maven Test
+
+  - script: |
+      echo 'stagename        : ${{ parameters.vars.stageName }}'
+      echo 'stagedisplayname : ${{ parameters.vars.stageDisplayName }}'
+      echo 'namespace        : ${{ parameters.vars.namespace }}'
+      echo 'buildreason      : ${{ parameters.vars.buildReason }}'
+      echo 'istargetbranch   : ${{ parameters.vars.isTargetBranch }}'
+    displayName: Maven Build

@@ -1,0 +1,6 @@
+variables:
+  stageName: "Prod"
+  stageDisplayName: "Prod"
+  namespace: "taas-core-prod"
+  buildReason: "IndividualCI"
+  isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}
