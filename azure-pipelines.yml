@@ -46,7 +46,7 @@ variables:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
     targetBranch: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    effectiveBranchName: ${{ replace(System.PullRequest.TargetBranch, 'refs/heads/', '') }}
+    effectiveBranchName: ${{ replace(variables.System.PullRequest.TargetBranch, 'refs/heads/', '') }}
     targetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
