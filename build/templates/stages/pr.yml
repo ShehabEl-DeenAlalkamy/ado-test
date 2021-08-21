@@ -12,7 +12,7 @@ stages:
           - script: |
               echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
-              echo 'variables.System.PullRequest.SourceBranch   : ${{ parameters.vars.System.PullRequest.SourceBranch'] }}'
+              echo 'variables.System.PullRequest.SourceBranch   : ${{ parameters.vars.System.PullRequest.SourceBranch }}'
               echo 'variables.System.PullRequest.TargetBranch   : ${{ parameters.vars.System.PullRequest.TargetBranch }}'
               echo 'variables.effectiveBranchName               : ${{ parameters.vars.effectiveBranchName }}'
               echo 'variables.shortHandPRTargetBranch           : ${{ parameters.vars.shortHandPRTargetBranch }}'
