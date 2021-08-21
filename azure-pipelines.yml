@@ -62,7 +62,21 @@ stages:
               echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
               echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
               echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
-              
+
+  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      - stage: PullRequestDetails
+        displayName: PR Details
+        jobs:
+          - job: LogInfo
+            steps:
+              - script: |
+                  echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
+                  echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
+                  echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
+                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+                  echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
+                  echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
+
 
 
   # - ${{ each environment in parameters.environments }}:
