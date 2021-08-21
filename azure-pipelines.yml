@@ -12,40 +12,64 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+parameters:
+  - name: environments
+    type: object
+    default:
+      - env: "dev"
+        stageName: "Dev"
+        stageDisplayName: "Development"
+        buildReason: "IndividualCI"
+        branchName: "dev"
+
+      - env: test
+        stageName: "Test"
+        stageDisplayName: "Test"
+        buildReason: "IndividualCI"
+        branchName: "test"
+
+      - env: "pprd"
+        stageName: "PPrd"
+        stageDisplayName: "Pre-Production"
+        buildReason: "IndividualCI"
+        branchName: "pprd"
+
+      - env: "prod"
+        stageName: "Prod"
+        stageDisplayName: "Production"
+        buildReason: "IndividualCI"
+        branchName: "prod"
+
 variables:
-  sourceBranch: $[variables['Build.SourceBranch']]
-  targetPullRequestBranch: $[variables['System.PullRequest.TargetBranch']]
-  templateDest: templates/CI-CD.yml
+  templateDest: build/templates/stages/stage.yml
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
+    effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
+    effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
 
 stages:
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Master"
-      stageDisplayName: "Master"
-      namespace: "taas-core"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/master') }}
+  - stage: dummy
+    jobs:
+      - job: hawhaw
+        steps: 
+          - script: |
+              echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
+              echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+              echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
+              echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
 
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Dev"
-      stageDisplayName: "Dev"
-      namespace: "taas-core-dev"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}
+  # - ${{ each environment in parameters.environments }}:
+  #     - template: ${{ variables.templateDest }}
+  #       parameters:
+  #         ${{ each pair in environment }}:
+  #           ${{ if ne(pair.key, 'branchName') }}:
+  #             ${{ pair.key }}: ${{ pair.value }}
+  #         isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
 
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Test"
-      stageDisplayName: "Test"
-      namespace: "taas-core-test"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/test') }}
-
-  - template: ${{ variables.templateDest }}
-    parameters:
-      stageName: "Prod"
-      stageDisplayName: "Prod"
-      namespace: "taas-core-prod"
-      buildReason: "IndividualCI"
-      isTargetBranch: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/prod') }}  
+  # - stage: ${{ parameters.environments[1].stageName }}
+  #   condition: always()
+  #   jobs:
+  #     - job: hawhaw
+  #       displayName: ${{ eq(variables.effectiveBranchName, parameters.environments[0].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[2].branchName) }} - ${{ eq(variables.effectiveBranchName, parameters.environments[3].branchName) }}
+  #       steps:
+  #         - script: echo ${{ eq(variables.effectiveBranchName, parameters.environments[1].branchName) }}
