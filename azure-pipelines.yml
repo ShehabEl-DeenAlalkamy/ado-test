@@ -74,6 +74,9 @@ stages:
                   echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
                   echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
                   echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+
+                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables.System.PullRequest.TargetBranch }}'
+                  
                   echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
                   echo 'variables.targetBranch                      : ${{ variables['targetBranch'] }}'
 
