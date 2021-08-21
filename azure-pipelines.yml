@@ -9,7 +9,7 @@ trigger:
   - test
   - prod
 
-pr: none
+# pr: none
 
 pool:
   vmImage: ubuntu-latest
