@@ -56,9 +56,9 @@ stages:
       - template: ${{ variables.prTemplateDest }}
         parameters:
           vars: ${{ variables }}
-  - stage: Logger
-    jobs:
-      - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+      - stage: Logger
+        jobs:
           - job: CILogInfo
             displayName: CI Logger
             steps:
