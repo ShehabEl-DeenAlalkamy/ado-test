@@ -52,13 +52,12 @@ variables:
     shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
+  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      - template: ${{ variables.prTemplateDest }}
+        parameters:
+          vars: ${{ variables }}
   - stage: Logger
     jobs:
-      - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-          - template: ${{ variables.prTemplateDest }}
-            parameters:
-              vars: ${{ variables }}
-
       - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
           - job: CILogInfo
             displayName: CI Logger
