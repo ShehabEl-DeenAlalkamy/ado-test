@@ -19,6 +19,10 @@ parameters:
     default: true
     type: boolean
 
+  - name: isProductionised
+    type: boolean
+    default: false
+
 stages:
   - stage: ${{ parameters.stageName }}
     displayName: ${{ parameters.stageDisplayName }}
@@ -60,9 +64,17 @@ stages:
       #         echo 'buildreason      : ${{ variables.buildReason }}'
       #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
       #       displayName: Logging File Variables
+      - ${{ if parameters.isProductionised }}:
+          # Run a Bash script on macOS, Linux, or Windows
+          - task: Bash@3
+            inputs:
+              filePath: build/source_code_changed.sh
+              arguments: app
 
       - job: TestApp
         displayName: Test
+        ${{ if parameters.isProductionised }}:
+          condition: eq(dependencies.CheckChanges.outputs['check_changes.SOURCE_CODE_CHANGED'], 'true')
         steps:
           - template: ../steps/maven-test.yml
             parameters:

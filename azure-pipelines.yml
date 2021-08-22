@@ -42,6 +42,11 @@ parameters:
         buildReason: "IndividualCI"
         branchName: "prod"
 
+  # by setting to true, the pipeline is triggered to source code changes only
+  - name: productionised
+    type: boolean
+    default: true
+
 variables:
   prTemplateDest: build/templates/stages/pr.yml
   templateDest: build/templates/stages/stage.yml
@@ -52,23 +57,33 @@ variables:
     shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
-  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      - template: ${{ variables.prTemplateDest }}
+
+  - ${{ each environment in parameters.environments }}:
+      - template: ${{ variables.templateDest }}
         parameters:
-          vars: ${{ variables }}
-  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
-      - stage: Logger
-        jobs:
-          - job: CILogInfo
-            displayName: CI Logger
-            steps:
-              - script: |
-                  echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
-                  echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
-                  echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
-                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
-                  echo 'variables.System.PullRequest.TargetBranch   : ${{ variables.System.PullRequest.TargetBranch }}'
-                  echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
+          ${{ each pair in environment }}:
+            ${{ if ne(pair.key, 'branchName') }}:
+              ${{ pair.key }}: ${{ pair.value }}
+          isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
+          isProductionised: ${{ parameters.productionised }}
+
+  # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  #     - template: ${{ variables.prTemplateDest }}
+  #       parameters:
+  #         vars: ${{ variables }}
+  # - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+  #     - stage: Logger
+  #       jobs:
+  #         - job: CILogInfo
+  #           displayName: CI Logger
+  #           steps:
+  #             - script: |
+  #                 echo 'variables.Build.Reason                      : ${{ variables['Build.Reason'] }}'
+  #                 echo 'variables.Build.SourceBranch                : ${{ variables['Build.SourceBranch'] }}'
+  #                 echo 'variables.System.PullRequest.SourceBranch   : ${{ variables['System.PullRequest.SourceBranch'] }}'
+  #                 echo 'variables.System.PullRequest.TargetBranch   : ${{ variables['System.PullRequest.TargetBranch'] }}'
+  #                 echo 'variables.System.PullRequest.TargetBranch   : ${{ variables.System.PullRequest.TargetBranch }}'
+  #                 echo 'variables.effectiveBranchName               : ${{ variables['effectiveBranchName'] }}'
 
   # - ${{ each environment in parameters.environments }}:
   #     - template: ${{ variables.templateDest }}
