@@ -4,10 +4,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - master
-  - dev
-  - test
-  - prod
+  branches:
+    include:
+      - master
+      - dev
+      - test
+      - prod
+  paths:
+    exclude:
+      - "hello-vois*.yml"
 
 # pr: none
 
@@ -57,7 +62,6 @@ variables:
     shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
-
   - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
