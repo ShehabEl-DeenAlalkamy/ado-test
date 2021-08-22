@@ -70,6 +70,7 @@ stages:
             displayName: Check for Changes
             steps:
               - task: Bash@3
+                name: check_changes
                 inputs:
                   filePath: build/source_code_changed.sh
                   arguments: app
@@ -77,7 +78,7 @@ stages:
       - job: TestApp
         displayName: Test
         ${{ if parameters.isProductionised }}:
-          condition: eq(dependencies.CheckChanges.outputs['CheckChanges.check_changes.SOURCE_CODE_CHANGED'], 'true')
+          condition: eq(dependencies.CheckChanges.outputs['.check_changes.SOURCE_CODE_CHANGED'], 'true')
         steps:
           - template: ../steps/maven-test.yml
             parameters:
