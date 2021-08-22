@@ -73,7 +73,7 @@ stages:
                 name: check_changes
                 displayName: "Check for Changes Task"
                 inputs:
-                  filePath: build/source_code_changed.sh
+                  filePath: build/src_changed.sh
                   arguments: app
           # - job: CheckChanges
           #   displayName: "Check changes"

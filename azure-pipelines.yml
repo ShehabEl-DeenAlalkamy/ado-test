@@ -45,7 +45,7 @@ parameters:
   # by setting to true, the pipeline is triggered to source code changes only
   - name: productionised
     type: boolean
-    default: true
+    default: false
 
 variables:
   prTemplateDest: build/templates/stages/pr.yml
