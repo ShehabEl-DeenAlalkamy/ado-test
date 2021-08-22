@@ -12,7 +12,7 @@ trigger:
       - prod
   paths:
     exclude:
-      - "hello-vois*.yml"
+      - "hello-vois-prod.yml"
 
 # pr: none
 
