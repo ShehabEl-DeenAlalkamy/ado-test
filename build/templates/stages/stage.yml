@@ -66,10 +66,13 @@ stages:
       #       displayName: Logging File Variables
       - ${{ if parameters.isProductionised }}:
           # Run a Bash script on macOS, Linux, or Windows
-          - task: Bash@3
-            inputs:
-              filePath: build/source_code_changed.sh
-              arguments: app
+          - job: CheckChanges
+            displayName: Check for Changes
+            steps:
+              - task: Bash@3
+                inputs:
+                  filePath: build/source_code_changed.sh
+                  arguments: app
 
       - job: TestApp
         displayName: Test
