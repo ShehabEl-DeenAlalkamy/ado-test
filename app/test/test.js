@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var request = require("request");
 
 const PORT = 3000;
-const USERNAME = "Shehab El-Deen Alalkamy";
+const USERNAME = "Shehab El-Deen Alalkamy ";
 
 describe("Status, content and database connection", function () {
   it("status", function (done) {
