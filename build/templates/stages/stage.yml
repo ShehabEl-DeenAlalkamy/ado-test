@@ -77,7 +77,7 @@ stages:
       - job: TestApp
         displayName: Test
         ${{ if parameters.isProductionised }}:
-          condition: eq(dependencies.CheckChanges.outputs['check_changes.SOURCE_CODE_CHANGED'], 'true')
+          condition: eq(dependencies.CheckChanges.outputs['CheckChanges.check_changes.SOURCE_CODE_CHANGED'], 'true')
         steps:
           - template: ../steps/maven-test.yml
             parameters:
