@@ -66,15 +66,42 @@ stages:
       #       displayName: Logging File Variables
       - ${{ if parameters.isProductionised }}:
           # Run a Bash script on macOS, Linux, or Windows
+          # - job: CheckChanges
+          #   displayName: Check for Changes
+          #   steps:
+          #     - task: Bash@3
+          #       name: check_changes
+          #       displayName: "Bash"
+          #       inputs:
+          #         filePath: build/source_code_changed.sh
+          #         arguments: app
           - job: CheckChanges
-            displayName: Check for Changes
+            displayName: "Check changes"
             steps:
-              - task: Bash@3
+              - bash: |
+                  PATH_FILTER="src/"
+                  CHANGED_FILES=$(git diff HEAD HEAD~ --name-only)
+                  MATCH_COUNT=0
+
+                  echo "Checking for file changes..."
+                  for FILE in $CHANGED_FILES
+                  do
+                    if [[ $FILE == *$PATH_FILTER* ]]; then
+                      echo "MATCH:  ${FILE} changed"
+                      MATCH_COUNT=$(($MATCH_COUNT+1))
+                    else
+                      echo "IGNORE: ${FILE} changed"
+                    fi
+                  done
+
+                  echo "$MATCH_COUNT match(es) for filter '$PATH_FILTER' found."
+                  if [[ $MATCH_COUNT -gt 0 ]]; then
+                    echo "##vso[task.setvariable variable=SOURCE_CODE_CHANGED;isOutput=true]true"
+                  else
+                    echo "##vso[task.setvariable variable=SOURCE_CODE_CHANGED;isOutput=true]false"
+                  fi
                 name: check_changes
-                displayName: "Bash"
-                inputs:
-                  filePath: build/source_code_changed.sh
-                  arguments: app
+                displayName: "Check changed files"
 
       - job: TestApp
         displayName: Test
