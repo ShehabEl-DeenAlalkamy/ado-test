@@ -58,8 +58,8 @@ variables:
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    # effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
-    shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
+    effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
+    # shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
   # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
@@ -73,7 +73,7 @@ stages:
   #                 echo " ${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}"
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
       - ${{ each environment in parameters.environments }}:
-          - ${{ if eq(variables.shortHandPRTargetBranch, environment.branchName) }}:
+          - ${{ if eq(variables.effectiveBranchName, environment.branchName) }}:
               - template: ${{ variables.prTemplateDest }}
                 parameters:
                   vars: ${{ variables }}
