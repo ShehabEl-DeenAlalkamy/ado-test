@@ -58,8 +58,7 @@ variables:
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    effectiveBranchName: ${{ replace(variables.System.PullRequest.TargetBranch, 'refs/heads/', '') }}
-    shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
+    effectiveBranchName: $(System.PullRequest.TargetBranch)
 
 stages:
   - ${{ each environment in parameters.environments }}:

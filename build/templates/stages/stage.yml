@@ -25,7 +25,11 @@ parameters:
 
 stages:
   - stage: ${{ parameters.stageName }}
-    displayName: ${{ parameters.stageDisplayName }}
+    displayName: |
+      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+          PR - ${{ replace(variables['Build.SourceBranch'], 'refs/pull/?', '') }} -> ${{ parameters.stageDisplayName }}
+      ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+          ${{ parameters.stageDisplayName }}
     condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     variables:
       - template: ../vars/vars-${{ parameters.env }}.yml
