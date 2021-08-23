@@ -17,6 +17,8 @@ stages:
 
       - job: ValidateBranch
         displayName: Validate Branch
+        dependsOn:
+          - Logger
         steps:
           - template: ../steps/maven-build.yml
             parameters:
