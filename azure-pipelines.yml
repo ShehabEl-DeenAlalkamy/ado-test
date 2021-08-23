@@ -69,6 +69,7 @@ stages:
               ${{ pair.key }}: ${{ pair.value }}
           isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
           isProductionised: ${{ parameters.productionised }}
+          vars: ${{ variables }}
 
   # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
   #     - template: ${{ variables.prTemplateDest }}

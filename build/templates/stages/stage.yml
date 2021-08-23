@@ -23,10 +23,13 @@ parameters:
     type: boolean
     default: false
 
+  - name: vars
+    type: object
+
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+      displayName: ${{ parameters.vars.effectiveBranchName }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:   
       displayName: ${{ parameters.stageDisplayName }}       
     condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
