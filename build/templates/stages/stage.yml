@@ -26,7 +26,7 @@ parameters:
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: PR ${{ replace(variables['Build.SourceBranch'], 'refs/pull/?/', '') }} --> ${{ parameters.stageDisplayName }}
+      displayName: $(System.PullRequest.TargetBranch) PR ${{ variables['system.pullRequest.sourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:   
       displayName: ${{ parameters.stageDisplayName }}       
     condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
