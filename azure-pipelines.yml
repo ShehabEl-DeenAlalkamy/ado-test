@@ -69,7 +69,8 @@ stages:
           - job: logs
             steps:
               - bash: |
-                  echo '${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}'
+                  # echo '# ${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}'
+                  echo 'PR: $SYSTEM_PULLREQUEST_SOURCEBRANCH --> $SYSTEM_PULLREQUEST_TARGETBRANCH'
   - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
