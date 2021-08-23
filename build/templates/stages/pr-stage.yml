@@ -1,0 +1,47 @@
+parameters:
+  - name: vars
+    type: object
+
+stages:
+  - stage: PullRequest
+    displayName: Pull Request Validation
+    jobs:
+      - job: Logger
+        displayName: PR Details
+        steps:
+          - task: Bash@3
+            name: PRInfo
+            displayName: Logs
+            inputs:
+              filePath: build/pr_logs.sh
+
+      - job: ValidateBranch
+        displayName: Validate Branch
+        dependsOn:
+          - Logger
+        steps:
+          - template: ../steps/maven-build.yml
+            parameters:
+              vars: ${{ variables }}
+              # goals: "test"
+
+      - job: TestFailureHandling
+        displayName: Error Handling
+        dependsOn:
+          - ValidateBranch
+        condition: failed()
+        steps:
+          - template: ../steps/send-notifications-to-team.yml
+            parameters:
+              vars: ${{ variables }}
+
+      # - job: SetDetails
+      #   displayName: Set Details
+      #   steps:
+      #     - bash: |
+      #         export DETAILS="PR: $SYSTEM_PULLREQUEST_SOURCEBRANCH --> $SYSTEM_PULLREQUEST_TARGETBRANCH"
+      #         export TARGETBRANCH="${{ parameters.vars.shortHandPRTargetBranch }}"
+
+      #         echo "##vso[task.setvariable variable=DISPLAY_NAME;isOutput=true]$DETAILS"
+      #         echo "##vso[task.setvariable variable=PR_TARGET_BRANCH;isOutput=true]$TARGETBRANCH"
+      #       name: set_details

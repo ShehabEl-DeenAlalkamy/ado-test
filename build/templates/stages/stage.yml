@@ -11,18 +11,32 @@ parameters:
     default: ""
     type: string
 
-  - name: buildReason
-    default: ""
-    type: string
+  # - name: buildReason
+  #   default: ""
+  #   type: string
 
-  - name: isTargetBranch
-    default: true
+  # - name: isTargetBranch
+  #   default: true
+  #   type: boolean
+
+  - name: isProductionised
     type: boolean
+    default: false
+
+  # - name: vars
+  #   type: object
 
 stages:
   - stage: ${{ parameters.stageName }}
+    # ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+    # displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+    # dependsOn: PullRequestDetails
+    # variables:
+    #   - template: ../vars/vars-${{ parameters.env }}.yml
+    #   - name: details
+    #     value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+    # condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     displayName: ${{ parameters.stageDisplayName }}
-    condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     variables:
       - template: ../vars/vars-${{ parameters.env }}.yml
     jobs:
@@ -60,10 +74,56 @@ stages:
       #         echo 'buildreason      : ${{ variables.buildReason }}'
       #         echo 'istargetbranch   : ${{ variables.isTargetBranch }}'
       #       displayName: Logging File Variables
+      - ${{ if parameters.isProductionised }}:
+          # Run a Bash script on macOS, Linux, or Windows
+          - job: CheckChanges
+            displayName: Check for Changes
+            steps:
+              - task: Bash@3
+                name: check_changes
+                displayName: "Check for Changes Task"
+                inputs:
+                  filePath: build/src_changed.sh
+                  arguments: app
+          # - job: CheckChanges
+          #   displayName: "Check changes"
+          #   steps:
+          #     - bash: |
+          #         PATH_FILTER="src/"
+          #         CHANGED_FILES=$(git diff HEAD HEAD~ --name-only)
+          #         MATCH_COUNT=0
+
+          #         echo "Checking for file changes..."
+          #         for FILE in $CHANGED_FILES
+          #         do
+          #           if [[ $FILE == *$PATH_FILTER* ]]; then
+          #             echo "MATCH:  ${FILE} changed"
+          #             MATCH_COUNT=$(($MATCH_COUNT+1))
+          #           else
+          #             echo "IGNORE: ${FILE} changed"
+          #           fi
+          #         done
+
+          #         echo "$MATCH_COUNT match(es) for filter '$PATH_FILTER' found."
+          #         if [[ $MATCH_COUNT -gt 0 ]]; then
+          #           echo "##vso[task.setvariable variable=SOURCE_CODE_CHANGED;isOutput=true]true"
+          #         else
+          #           echo "##vso[task.setvariable variable=SOURCE_CODE_CHANGED;isOutput=true]false"
+          #         fi
+          #       name: check_changes
+          #       displayName: "Check changed files"
 
       - job: TestApp
         displayName: Test
+        ${{ if parameters.isProductionised }}:
+          dependsOn: CheckChanges
+          condition: eq(dependencies.CheckChanges.outputs['check_changes.SOURCE_CODE_CHANGED'], 'true')
         steps:
+          # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+          #     - bash: |
+          #         echo "Details: ${{ variables.details }}"
+          #       name: set_details
+
           - template: ../steps/maven-test.yml
             parameters:
               vars: ${{ variables }}
