@@ -28,13 +28,13 @@ parameters:
 
 stages:
   - stage: ${{ parameters.stageName }}
-    ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
-      dependsOn: PullRequestDetails
-      variables:
-        - template: ../vars/vars-${{ parameters.env }}.yml
-        - name: details
-          value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+    # ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      # displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+      # dependsOn: PullRequestDetails
+      # variables:
+      #   - template: ../vars/vars-${{ parameters.env }}.yml
+      #   - name: details
+      #     value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
       displayName: ${{ parameters.stageDisplayName }}
       condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
@@ -120,10 +120,10 @@ stages:
           dependsOn: CheckChanges
           condition: eq(dependencies.CheckChanges.outputs['check_changes.SOURCE_CODE_CHANGED'], 'true')
         steps:
-          - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-              - bash: |
-                  echo "Details: ${{ variables.details }}"
-                name: set_details
+          # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+          #     - bash: |
+          #         echo "Details: ${{ variables.details }}"
+          #       name: set_details
 
           - template: ../steps/maven-test.yml
             parameters:
