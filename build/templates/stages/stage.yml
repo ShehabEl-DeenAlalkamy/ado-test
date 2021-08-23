@@ -29,7 +29,7 @@ parameters:
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: ${{ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] }}
+      displayName: stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME']
       dependsOn: PullRequestDetails
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:   
       displayName: ${{ parameters.stageDisplayName }}       
