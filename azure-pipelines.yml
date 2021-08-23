@@ -64,7 +64,7 @@ variables:
 stages:
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
       - stage: logger
-        displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ $(System.PullRequest.SourceBranch) }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+        displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ variables.System.PullRequest.SourceBranch }} --> ${{ variables['system.pullRequest.targetBranch'] }}
         jobs:
           - job: logs
             steps:
