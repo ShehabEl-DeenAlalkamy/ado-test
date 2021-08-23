@@ -62,15 +62,20 @@ variables:
     shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
+  # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  #     - stage: logger
+  #       displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ variables.System.PullRequest.SourceBranch }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+  #       jobs:
+  #         - job: logs
+  #           steps:
+  #             - bash: |
+  #                 echo "PR: $SYSTEM_PULLREQUEST_SOURCEBRANCH --> $SYSTEM_PULLREQUEST_TARGETBRANCH"
+  #                 echo " ${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}"
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      - stage: logger
-        displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ variables.System.PullRequest.SourceBranch }} --> ${{ variables['system.pullRequest.targetBranch'] }}
-        jobs:
-          - job: logs
-            steps:
-              - bash: |
-                  echo "PR: $SYSTEM_PULLREQUEST_SOURCEBRANCH --> $SYSTEM_PULLREQUEST_TARGETBRANCH"
-                  echo " ${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}"
+      - template: ${{ variables.prTemplateDest }}
+        parameters:
+          vars: ${{ variables }}
+  
   - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:

@@ -29,10 +29,11 @@ parameters:
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: ${{ parameters.vars.effectiveBranchName }} ${{ parameters.vars.bla }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+      displayName: ${{ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] }}
+      dependsOn: PullRequestDetails
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:   
       displayName: ${{ parameters.stageDisplayName }}       
-    condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
+      condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
     variables:
       - template: ../vars/vars-${{ parameters.env }}.yml
     jobs:
