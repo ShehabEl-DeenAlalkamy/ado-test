@@ -58,10 +58,18 @@ variables:
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    effectiveBranchName: $[variables.System.PullRequest.TargetBranch]
-    bla: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
+    effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
+    shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
+  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      - stage: logger
+        displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+        jobs:
+          - job: logs
+            steps:
+              - bash: |
+                  echo 'Testing'
   - ${{ each environment in parameters.environments }}:
       - template: ${{ variables.templateDest }}
         parameters:
