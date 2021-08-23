@@ -29,7 +29,7 @@ parameters:
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: $(stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'])
+      displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
       dependsOn: PullRequestDetails
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
       displayName: ${{ parameters.stageDisplayName }}
@@ -118,7 +118,7 @@ stages:
         steps:
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
               - bash: |
-                  echo "Details: ${{ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] }}""
+                  echo "Details: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]"
                 name: set_details
 
           - template: ../steps/maven-test.yml
