@@ -29,7 +29,7 @@ parameters:
 stages:
   - stage: ${{ parameters.stageName }}
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      displayName: ${{ parameters.vars.effectiveBranchName }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
+      displayName: ${{ parameters.vars.effectiveBranchName }} ${{ parameters.vars.bla }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:   
       displayName: ${{ parameters.stageDisplayName }}       
     condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
