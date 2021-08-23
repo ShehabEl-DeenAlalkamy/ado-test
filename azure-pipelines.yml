@@ -26,25 +26,25 @@ parameters:
       - env: "dev"
         stageName: "Dev"
         stageDisplayName: "Development"
-        buildReason: "IndividualCI"
+        # buildReason: "IndividualCI"
         branchName: "dev"
 
       - env: test
         stageName: "Test"
         stageDisplayName: "Test"
-        buildReason: "IndividualCI"
+        # buildReason: "IndividualCI"
         branchName: "test"
 
       - env: "pprd"
         stageName: "PPrd"
         stageDisplayName: "Pre-Production"
-        buildReason: "IndividualCI"
+        # buildReason: "IndividualCI"
         branchName: "pprd"
 
       - env: "prod"
         stageName: "Prod"
         stageDisplayName: "Production"
-        buildReason: "IndividualCI"
+        # buildReason: "IndividualCI"
         branchName: "prod"
 
   # by setting to true, the pipeline is triggered to source code changes only
@@ -53,15 +53,41 @@ parameters:
     default: false
 
 variables:
-  prTemplateDest: build/templates/stages/pr.yml
+  prTemplateDest: build/templates/stages/pr-stage.yml
   templateDest: build/templates/stages/stage.yml
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     effectiveBranchName: ${{ replace(variables['Build.SourceBranch'], 'refs/heads/', '') }}
+  # ! Please keep in mind that effectiveBranchName in PR triggering event is not going to be initialized unless there was a branch policy
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
     effectiveBranchName: ${{ replace(variables['System.PullRequest.TargetBranch'], 'refs/heads/', '') }}
     # shortHandPRTargetBranch: $(System.PullRequest.TargetBranch)
 
 stages:
+  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+      - ${{ each environment in parameters.environments }}:
+          - ${{ if eq(variables.effectiveBranchName, environment.branchName) }}:
+              - template: ${{ variables.templateDest }}
+                parameters:
+                  ${{ each pair in environment }}:
+                    ${{ if ne(pair.key, 'branchName') }}:
+                      ${{ pair.key }}: ${{ pair.value }}
+
+  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      - template: ${{ variables.prTemplateDest }}
+        paramters:
+          vars: ${{ variables }}
+
+  # - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+  #     - ${{ each environment in parameters.environments }}:
+  #         - template: ${{ variables.templateDest }}
+  #           parameters:
+  #             ${{ each pair in environment }}:
+  #               ${{ if ne(pair.key, 'branchName') }}:
+  #                 ${{ pair.key }}: ${{ pair.value }}
+  #             isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
+  #             isProductionised: ${{ parameters.productionised }}
+  #             vars: ${{ variables }}
+
   # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
   #     - stage: logger
   #       displayName: ${{ variables.effectiveBranchName }} ${{ variables.shortHandPRTargetBranch }} PR ${{ variables.System.PullRequest.SourceBranch }} --> ${{ variables['system.pullRequest.targetBranch'] }}
@@ -71,23 +97,6 @@ stages:
   #             - bash: |
   #                 echo "PR: $SYSTEM_PULLREQUEST_SOURCEBRANCH --> $SYSTEM_PULLREQUEST_TARGETBRANCH"
   #                 echo " ${{ variables.effectiveBranchName }} - ${{ variables.shortHandPRTargetBranch }} PR ${{ variables['System.PullRequest.SourceBranch'] }} --> ${{ variables['system.pullRequest.targetBranch'] }}"
-  - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      - ${{ each environment in parameters.environments }}:
-          - ${{ if eq(variables.effectiveBranchName, environment.branchName) }}:
-              - template: ${{ variables.prTemplateDest }}
-                parameters:
-                  vars: ${{ variables }}
-
-  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
-      - ${{ each environment in parameters.environments }}:
-          - template: ${{ variables.templateDest }}
-            parameters:
-              ${{ each pair in environment }}:
-                ${{ if ne(pair.key, 'branchName') }}:
-                  ${{ pair.key }}: ${{ pair.value }}
-              isTargetBranch: ${{ eq(variables.effectiveBranchName, environment.branchName) }}
-              isProductionised: ${{ parameters.productionised }}
-              vars: ${{ variables }}
 
   # - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
   #     - template: ${{ variables.prTemplateDest }}

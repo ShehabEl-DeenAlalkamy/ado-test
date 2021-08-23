@@ -11,35 +11,34 @@ parameters:
     default: ""
     type: string
 
-  - name: buildReason
-    default: ""
-    type: string
+  # - name: buildReason
+  #   default: ""
+  #   type: string
 
-  - name: isTargetBranch
-    default: true
-    type: boolean
+  # - name: isTargetBranch
+  #   default: true
+  #   type: boolean
 
   - name: isProductionised
     type: boolean
     default: false
 
-  - name: vars
-    type: object
+  # - name: vars
+  #   type: object
 
 stages:
   - stage: ${{ parameters.stageName }}
     # ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      # displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
-      # dependsOn: PullRequestDetails
-      # variables:
-      #   - template: ../vars/vars-${{ parameters.env }}.yml
-      #   - name: details
-      #     value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
-    ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
-      displayName: ${{ parameters.stageDisplayName }}
-      condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
-      variables:
-        - template: ../vars/vars-${{ parameters.env }}.yml
+    # displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+    # dependsOn: PullRequestDetails
+    # variables:
+    #   - template: ../vars/vars-${{ parameters.env }}.yml
+    #   - name: details
+    #     value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
+    # condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
+    displayName: ${{ parameters.stageDisplayName }}
+    variables:
+      - template: ../vars/vars-${{ parameters.env }}.yml
     jobs:
       # - job: TestJob
       #   displayName: Test Job
