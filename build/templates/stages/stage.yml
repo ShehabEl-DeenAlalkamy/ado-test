@@ -31,11 +31,15 @@ stages:
     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
       displayName: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
       dependsOn: PullRequestDetails
+      variables:
+        - template: ../vars/vars-${{ parameters.env }}.yml
+        - name: details
+          value: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]
     ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
       displayName: ${{ parameters.stageDisplayName }}
       condition: and(eq(variables['Build.Reason'], '${{ parameters.buildReason }}'), ${{ parameters.isTargetBranch }})
-    variables:
-      - template: ../vars/vars-${{ parameters.env }}.yml
+      variables:
+        - template: ../vars/vars-${{ parameters.env }}.yml
     jobs:
       # - job: TestJob
       #   displayName: Test Job
@@ -118,7 +122,7 @@ stages:
         steps:
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
               - bash: |
-                  echo "Details: $[ stageDependencies.PullRequestDetails.SetDetails.outputs['set_details.DISPLAY_NAME'] ]"
+                  echo "Details: ${{ variables.details }}"
                 name: set_details
 
           - template: ../steps/maven-test.yml
